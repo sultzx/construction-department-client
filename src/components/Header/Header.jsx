@@ -18,7 +18,9 @@ const Header = () => {
           <Container>
             <Link to={"/main"}>
               <Navbar.Brand className="btn btn-outline-light header-brand">
-                React-Bootstrap
+                <img src="https://www.gov.kz/static/media/gerb_sm.aaf449a0.png" 
+                     width='36px' style={{opacity: '0.8', marginRight: '8px'}} />
+              Қарағанды облысының әкімдігі
               </Navbar.Brand>
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />

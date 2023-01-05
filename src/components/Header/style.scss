@@ -1,3 +1,6 @@
+@import "~bootstrap/scss/bootstrap";
+
+
 nav {
     height: 80px;background: linear-gradient(-100deg, #0A2472, #0E6BA8 49%, #5AA6D1);
 }
@@ -9,9 +12,15 @@ nav {
 }
 
 .header-brand:hover {
+    border-color: transparent;
     background-color: transparent;
 }
 
+.header-brand:active {
+    border-color: transparent;
+    background-color: blue;
+    background: white;
+}
 
 .header-link {
     border-color: transparent;

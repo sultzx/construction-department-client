@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 // import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
 import Header from './components/Header/Header.jsx';
+import Main from './pages/Main.jsx'
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<>Login</>}/>
         <Route path='/registration' element={<>Registration</>}/>
-        <Route path='/' element={<>Main</>}/>
+        <Route path='/main' element={<Main/>}/>
       </Routes>
     </>
   );

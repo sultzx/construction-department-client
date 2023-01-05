@@ -1,0 +1,39 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.main-page-section {
+  background: linear-gradient(-88deg, #0A2472, #0E6BA8 50%, #5AA6D1 100%), #0E6BA8;height: 420px;
+}
+
+.main-page-section > div.row {
+  margin-right: 0px;padding-right: 0px;padding-top: 0px;margin-top: -300px;margin-left: 0px;
+}
+
+.main-page-section h1 {
+  color: white;font-size: 42px;padding-left: 0px;padding-right: 0px;margin: 0px;margin-right: 0px; position: sticky;
+}
+
+.main-page-section h3 {
+  color: white; position: sticky;
+}
+
+.main-page-section hr {
+  color: rgb(255,255,255);position: sticky;
+}
+.main-page-flag-img {
+  opacity: 0.20;height: auto;width: 460px;
+}
+
