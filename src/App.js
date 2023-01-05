@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // import { useDispatch, useSelector } from "react-redux";
 
 // import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import Header from './components/Header/Header.jsx';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <>
+      <Header/>
       <Routes>
         <Route path='/login' element={<>Login</>}/>
         <Route path='/registration' element={<>Registration</>}/>

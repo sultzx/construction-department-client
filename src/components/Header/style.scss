@@ -1,0 +1,43 @@
+nav {
+    height: 80px;background: linear-gradient(-100deg, #0A2472, #0E6BA8 49%, #5AA6D1);
+}
+
+.header-brand {
+    border-color: transparent;
+    border-width: 1px;
+    border-radius: 2px;
+}
+
+.header-brand:hover {
+    background-color: transparent;
+}
+
+
+.header-link {
+    border-color: transparent;
+    border-width: 1px;
+    border-radius: 2px;
+}
+
+.header-link:hover {
+    color: white;
+    background-color: transparent;
+}
+
+.header-link-login {
+    border-width: 1px;
+    border-radius: 2px;
+    margin-left: 8px;
+    margin-right: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.header-link-registration {
+    border-width: 1px;
+    border-radius: 2px;
+    margin-left: 4px;
+    margin-right: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
