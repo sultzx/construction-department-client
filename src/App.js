@@ -1,21 +1,21 @@
 import React from 'react'
 import { Routes, Route } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-// import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
 import Header from './components/Header/Header.jsx'
 import Login from './pages/Login.jsx'
 import Main from './pages/Main.jsx'
 
 function App() {
 
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  // const isAuth = useSelector(selectIsAuth)
+  const isAuth = useSelector(selectIsAuth)
 
-  // React.useEffect(() => {
-  //   dispatch(fetchAuthMe())
-  // }, [])
+  React.useEffect(() => {
+    dispatch(fetchAuthMe())
+  }, [])
 
   return (
     <>

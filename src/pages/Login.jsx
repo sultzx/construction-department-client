@@ -40,7 +40,6 @@ const Login = () => {
     return <Navigate to="/" />;
   }
 
-  alert(errors.email?.message);
 
   return (
     <>
