@@ -1,12 +1,12 @@
-import { Container, Navbar, Nav, Button } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout, selectIsAuth } from "../../redux/slices/auth";
+import blueProfile from "../../images/blue-profile.png";
 
 const Header = () => {
-
   const isAuth = useSelector(selectIsAuth);
 
   const dispatch = useDispatch();
@@ -37,11 +37,13 @@ const Header = () => {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
-                <Link to={"/main"}>
+                {/* <Link to={"/main"}>
                   <a className="btn btn-outline-light header-link">Басты бет</a>
-                </Link>
+                </Link> */}
                 <Link to={"/construction-department"}>
-                  <a className="btn btn-outline-light header-link">Құрылыс</a>
+                  <a className="btn btn-outline-light header-link">
+                    Құрылыс бөлімі
+                  </a>
                 </Link>
                 <Link to={"/projects"}>
                   <a className="btn btn-outline-light header-link">Жобалар</a>
@@ -54,31 +56,40 @@ const Header = () => {
                 <Link to={"/contact"}>
                   <a className="btn btn-outline-light header-link">Байланыс</a>
                 </Link>
-                { isAuth ? (
+                {isAuth ? (
                   <>
-                    <Link to={"/profile"}>
-                      <a className="btn btn-outline-light header-link">
-                        Жеке профиль
-                      </a>
-                    </Link>
-                    <a type="button"
-                      className="btn btn-outline-light header-link-login"
-                      onClick={onClickLogout}
+                    <NavDropdown
+                      active
+                      title={userData.firstname + " " + userData.lastname}
                     >
-                      Шығу
-                    </a>
+                      <NavDropdown.Item >
+                        <Link to={"/profile"}>
+                          Жеке профиль
+                        </Link>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item onClick={onClickLogout}>
+                        Шығу
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                    <img
+                      className="rounded-circle shadow cover"
+                      width="42px"
+                      height="auto"
+                      src={userData ? userData.avatarUrl : blueProfile}
+                      alt={"profile"}
+                    />
                   </>
                 ) : (
                   <>
-                    <Link to={"/login"}>
-                      <a className="btn btn-outline-light header-link-login">
-                        Кіру
-                      </a>
+                    <Link
+                      to={"/login"}
+                      className="btn btn-outline-light header-link-login">
+                      Кіру
                     </Link>
-                    <Link to={"/registration"}>
-                      <a className="btn btn-light header-link-registration">
-                        Тіркелу
-                      </a>
+                    <Link
+                      to={"/registration"}
+                      className="btn btn-light header-link-registration">
+                      Тіркелу
                     </Link>
                   </>
                 )}

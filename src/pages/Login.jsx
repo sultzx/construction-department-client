@@ -40,7 +40,6 @@ const Login = () => {
     return <Navigate to="/" />;
   }
 
-
   return (
     <>
       <section className="login-page-section">
