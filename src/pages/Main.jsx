@@ -1,13 +1,13 @@
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
-import '../index.scss'
+import '../styles/index.scss'
 import flag from '../images/flag.png'
 
 const Main = () => {
 
     return (<>
     <section className='text-center main-page-section'>
-        <img src={flag} className='main-page-flag-img' width='623px' height='491px'  />
+        <img src={flag} className='main-page-flag-img' width='623px' height='491px' alt='flag' />
         <Row>
             <Col md={12} lg={12} sm={12} xs={12}>
                 <h1>Қарағанды облысының әкімдігі</h1>
