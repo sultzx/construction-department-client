@@ -1,0 +1,43 @@
+
+///LOGIN PAGE STYLES
+
+.login-page-section {
+    padding-top: 80px;position: sticky;background: transparent;
+  }
+   
+  .card.card-thumbnail {
+    border-radius: 2px;box-shadow: 0px 0px 20px 7px #E9F8FE;border-style: solid;border-color: #0E6BA8;
+  }
+  
+  .card.card-panel {
+    border-radius: 2px;border-style: none;border-color: transparent;
+  }
+  
+  .card-header {
+    background: linear-gradient(-100deg, #0A2472, #0E6BA8 51%, #5AA6D1);border-radius: 0;border-style: none;border-top-left-radius: 2px;border-top-right-radius: 2px;
+  }
+  
+  .card-header-background-img {
+    height: 154px;opacity: 0.20;transform: scale(1);transform-style: preserve-3d;transition: ease-in-out;padding-top: 0px;padding-bottom: 0px;margin-top: 0px;
+  }
+  
+  .login-page-card-heading {
+    color: rgb(255,255,255);position: sticky;display: block;overflow: auto;margin-top: -124px;padding-bottom: 17px;
+  }
+  
+  .card-header > p {
+    color: white;position: sticky;
+  }
+  
+  .card-body {
+    position: sticky;background: white;
+  }
+  
+  .form-control.firstname-input, .form-control.email-input, .form-control.password-input {
+    border-top-left-radius: 2px; border-top-right-radius: 2px;border-bottom-right-radius: 2px;border-bottom-left-radius: 2px;border-color: #0E6BA8;
+  }
+  
+  .btn.btn-primary.d-block.w-100.login-submit-btn {
+    border-top-left-radius: 2px;border-top-right-radius: 2px;border-bottom-right-radius: 2px;border-bottom-left-radius: 2px;background: linear-gradient(100deg, #0A2472, #0E6BA8 51%, #5AA6D1);border-color: #0E6BA8;
+  }
+  

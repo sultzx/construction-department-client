@@ -42,7 +42,7 @@ const Header = () => {
                 </Link> */}
                 <Link to={"/construction-department"}>
                   <a className="btn btn-outline-light header-link">
-                    Құрылыс бөлімі
+                    Құрылыс
                   </a>
                 </Link>
                 <Link to={"/projects"}>
@@ -59,8 +59,13 @@ const Header = () => {
                 {isAuth ? (
                   <>
                     <NavDropdown
+                      style={{
+                        borderLeft: 'white solid 1px',
+                        paddingLeft: '12px',
+                        marginLeft: '8px'
+                      }}
                       active
-                      title={userData.firstname + " " + userData.lastname}
+                      title={`Қош келдіңіз, ${userData.firstname} ${userData.lastname ? userData.lastname : ''}`}
                     >
                       <NavDropdown.Item >
                         <Link to={"/profile"}>
@@ -75,7 +80,7 @@ const Header = () => {
                       className="rounded-circle shadow cover"
                       width="42px"
                       height="auto"
-                      src={userData ? userData.avatarUrl : blueProfile}
+                      src={userData.avatarUrl ? userData.avatarUrl : blueProfile}
                       alt={"profile"}
                     />
                   </>

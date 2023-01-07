@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
 import Header from './components/Header/Header.jsx'
 import Login from './pages/Login.jsx'
+import Registration from './pages/Registration.jsx';
 import Main from './pages/Main.jsx'
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/login' element={<Login/>}/>
-        {/* <Route path='/registration' element={<Registration/>}/> */}
+        <Route path='/registration' element={<Registration/>}/>
         <Route path='/main' element={<Main/>}/>
       </Routes>
     </>
