@@ -29,7 +29,7 @@ const Login = () => {
     const data = await dispatch(fetchAuth(values));
 
     if (!data.payload) {
-      return window.alert("Авторизация жок");
+      return console.log(data.error.message)
     }
 
     if ("token" in data.payload) {

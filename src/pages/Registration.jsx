@@ -1,3 +1,4 @@
+import React, {useRef} from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -12,10 +13,13 @@ const Registration = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
 
+  const [matchedPass, setMatchedPass] = React.useState(true)
+
   const {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -31,7 +35,11 @@ const Registration = () => {
 
     if (values.password === values.confirmPass ) {
 
-        const data = await dispatch(fetchRegister(values));
+        const data = await dispatch(fetchRegister({
+          firstname: values.firstname,
+          email: values.email,
+          password: values.password
+        }));
 
         if (!data.payload) {
         return window.alert("Авторизация жок");
@@ -42,7 +50,7 @@ const Registration = () => {
         }
     
     } else {
-        alert('pass!')
+        setMatchedPass(false)
     }
 
   };
@@ -133,6 +141,8 @@ const Registration = () => {
                         ) : (
                           ""
                         )}
+
+                      
                         <Form.Control
                           style={
                             Boolean(errors.password?.message)
@@ -141,8 +151,9 @@ const Registration = () => {
                           }
                           className="form-control password-input"
                           type="password"
+                          
                           {...register("password", {
-                            required: "Құпия сөзді енгізіңіз",
+                            required: "Құпия сөзді енгізіңіз"
                           })}
                           placeholder="Құпия сөз"
                         />
@@ -156,6 +167,14 @@ const Registration = () => {
                         ) : (
                           ""
                         )}
+
+                        {!matchedPass? (
+                          <Form.Label style={{ color: "red" }}>
+                            Құпия сөздер сәйкес келмейді
+                          </Form.Label>
+                        ) : (
+                          ""
+                        )}
                         <Form.Control
                           style={
                             Boolean(errors.confirmPass?.message)
@@ -164,8 +183,14 @@ const Registration = () => {
                           }
                           className="form-control password-input"
                           type="password"
+                        
                           {...register("confirmPass", {
-                            required: "Құпия сөзді енгізіңіз",
+                            required: "Құпия сөзді қайта енгізіңіз",
+                            validate: (val) => {
+                              if (watch('password') != val) {
+                                return "Құпия сөздер сәйкес келмейді"
+                              }
+                            }
                           })}
                           placeholder="Құпия сөзді қайталаңыз"
                         />
@@ -177,7 +202,7 @@ const Registration = () => {
                           className="btn btn-primary d-block w-100 login-submit-btn"
                           type="submit"
                         >
-                          Тіркелу
+                          {isValid ? "Тіркелу" : "Барлығын толтырыңыз"}
                         </button>
                       </div>
                       <p className="text-muted">Құпия сөзді ұмыттыңыз ба?</p>
