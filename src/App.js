@@ -7,6 +7,7 @@ import Header from './components/Header/Header.jsx'
 import Login from './pages/Login.jsx'
 import Registration from './pages/Registration.jsx';
 import Main from './pages/Main.jsx'
+import Contact from './pages/Contact';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/registration' element={<Registration/>}/>
         <Route path='/main' element={<Main/>}/>
+        <Route path='/contact' element={<Contact/>}/>
       </Routes>
     </>
   );

@@ -74,7 +74,7 @@ const Registration = () => {
     variant={errorMessage && errorMessage ? 'danger' : 'primary'}
     style={errorMessage && errorMessage ? { borderRadius: '1px', borderColor: 'red'} : { borderRadius: '1px'}}> {
       
-        (<div className="text-center" >
+        (<div className="text-center" style={{margin: '-12px'}}>
           {errorMessage && <span>{errorMessage}</span>}
         </div>)
       
@@ -243,7 +243,7 @@ const Registration = () => {
                           className="btn btn-primary d-block w-100 login-submit-btn"
                           type="submit"
                         >
-                          {isValid ? "Тіркелу" : "Барлығын толтырыңыз"}
+                          { "Тіркелу" }
                         </button>
                       </div>
                       <p className="text-muted">Құпия сөзді ұмыттыңыз ба?</p>
