@@ -1,4 +1,5 @@
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Card, Form, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
@@ -8,13 +9,16 @@ import "../styles/Login.scss";
 import flag from "../images/flag.png";
 
 const Login = () => {
+
   const dispatch = useDispatch();
+
   const isAuth = useSelector(selectIsAuth);
+
+  const [errorMessage, setErrorMessage] = React.useState('')
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -28,9 +32,7 @@ const Login = () => {
 
     const data = await dispatch(fetchAuth(values));
 
-    if (!data.payload) {
-      return console.log(data.error.message)
-    }
+    setErrorMessage(data.payload.message)
 
     if ("token" in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
@@ -43,6 +45,15 @@ const Login = () => {
 
   return (
     <>
+    <Alert  
+      variant={errorMessage && errorMessage ? 'danger' : 'primary'}
+      style={errorMessage && errorMessage ? { borderRadius: '1px', borderColor: 'red'} : { borderRadius: '1px'}}> {
+      
+        (<div className="text-center" >
+          {errorMessage && <span>{errorMessage}</span>}
+        </div>)
+      
+    }</Alert>
       <section className="login-page-section">
         <Container>
           <Row>

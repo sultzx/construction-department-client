@@ -1,5 +1,5 @@
-import React, {useRef} from "react";
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Card, Form, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
@@ -9,16 +9,18 @@ import "../styles/Registration.scss";
 import flag from "../images/flag.png";
 
 const Registration = () => {
-
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
 
-  const [matchedPass, setMatchedPass] = React.useState(true)
+  const [matchedPass, setMatchedPass] = React.useState(true);
+
+  const [errorMessage, setErrorMessage] = React.useState('')
+
+  // const msgs = []
 
   const {
     register,
     handleSubmit,
-    setError,
     watch,
     formState: { errors, isValid },
   } = useForm({
@@ -26,34 +28,41 @@ const Registration = () => {
       firstname: "",
       email: "",
       password: "",
-      confirmPass: ""
+      confirmPass: "",
     },
     mode: "onChange",
   });
 
   const onSubmit = async (values) => {
-
-    if (values.password === values.confirmPass ) {
-
-        const data = await dispatch(fetchRegister({
+    if (values.password === values.confirmPass) {
+      const data = await dispatch(
+        fetchRegister({
           firstname: values.firstname,
           email: values.email,
-          password: values.password
-        }));
+          password: values.password,
+        })
+      );
 
-        if (!data.payload) {
-        return window.alert("Авторизация жок");
-        }
+      setErrorMessage(data.payload.message)
 
-        if ("token" in data.payload) {
+      if ("token" in data.payload) {
         window.localStorage.setItem("token", data.payload.token);
-        }
-    
+      }
     } else {
-        setMatchedPass(false)
+      setMatchedPass(false);
     }
-
   };
+
+  // if (errorMessage) {
+  //   errorMessage.forEach((item, i) => {
+  //     msgs.push(item.msg.toLowerCase())
+  //   })
+  //   msgs[0] = msgs[0].charAt(0).toUpperCase() + msgs[0].slice(1)
+  // }
+
+  // const msg = msgs && msgs.join(', ')
+
+  console.log(errorMessage && errorMessage)
 
   if (isAuth) {
     return <Navigate to="/" />;
@@ -61,6 +70,16 @@ const Registration = () => {
 
   return (
     <>
+    <Alert  
+    variant={errorMessage && errorMessage ? 'danger' : 'primary'}
+    style={errorMessage && errorMessage ? { borderRadius: '1px', borderColor: 'red'} : { borderRadius: '1px'}}> {
+      
+        (<div className="text-center" >
+          {errorMessage && <span>{errorMessage}</span>}
+        </div>)
+      
+    }</Alert>
+    
       <section className="login-page-section">
         <Container>
           <Row>
@@ -88,112 +107,134 @@ const Registration = () => {
                     {/* REGISTRATION FORM BEGIN */}
                     <Form onSubmit={handleSubmit(onSubmit)} method="post">
                       <Form.Group className="mb-3 ">
-                        {Boolean(errors.firstname?.message) ? (
-                          <Form.Label style={{ color: "red" }}>
-                            {errors.firstname?.message}
-                          </Form.Label>
-                        ) : (
-                          ""
-                        )}
+                        
                         <Form.Control
                           style={
                             Boolean(errors.firstname?.message)
-                              ? { borderColor: "red" }
+                              ? { borderColor: "#ED474A" }
                               : { borderColor: "#0E6BA8" }
                           }
                           className=" firstname-input"
                           type="text"
                           {...register("firstname", {
                             required: "Атыңызды енгізіңіз",
+                            minLength: {
+                              value: 2,
+                              message: 'Атыңыз 2 және 30 символ арасында болуы керек'
+                            },
+                            maxLength: {
+                              value: 30,
+                              message: 'Атыңыз 2 және 30 символ арасында болуы керек'
+                            }
                           })}
                           placeholder="Атыңыз"
                         />
-                      </Form.Group>
 
-                      <Form.Group className="mb-3 ">
-                        {Boolean(errors.email?.message) ? (
-                          <Form.Label style={{ color: "red" }}>
-                            {errors.email?.message}
+                        {Boolean(errors.firstname?.message) ? (
+                          <Form.Label style={{ color: "#EF393B" }}>
+                            {errors.firstname?.message}
                           </Form.Label>
                         ) : (
                           ""
                         )}
+                      </Form.Group>
+
+                      <Form.Group className="mb-3 ">
+                        
                         <Form.Control
                           style={
                             Boolean(errors.email?.message)
-                              ? { borderColor: "red" }
+                              ? { borderColor: "#ED474A" }
                               : { borderColor: "#0E6BA8" }
                           }
                           className="form-control email-input"
                           type="email"
                           {...register("email", {
                             required: "Поштаңызды енгізіңіз",
+                            pattern: {
+                              value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                              message: 'Дұрыс форматты енгізіңіз'
+                            }
                           })}
                           placeholder="Поштаңыз"
                         />
+
+                        {Boolean(errors.email?.message) ? (
+                          <Form.Label style={{ color: "#ED474A" }}>
+                            {errors.email?.message}
+                          </Form.Label>
+                        ) : (
+                          ""
+                        )}
                       </Form.Group>
 
                       <Form.Group className="mb-3">
+
+                        <Form.Control
+                          style={
+                            Boolean(errors.password?.message)
+                              ? { borderColor: "#ED474A" }
+                              : { borderColor: "#0E6BA8" }
+                          }
+                          className="form-control password-input"
+                          type="password"
+                          {...register("password", {
+                            required: "Құпия сөзді енгізіңіз",
+                            minLength: {
+                              value: 6,
+                              message: 'Құпия сөз 6 және 16 символ арасында болуы керек'
+                            },
+                            maxLength: {
+                              value: 16,
+                              message: 'Атыңыз 6 және 16 символ арасында болуы керек'
+                            }
+                          })}
+                          placeholder="Құпия сөз"
+                        />
                         {Boolean(errors.password?.message) ? (
-                          <Form.Label style={{ color: "red" }}>
+                          <Form.Label style={{ color: "#ED474A" }}>
                             {errors.password?.message}
                           </Form.Label>
                         ) : (
                           ""
                         )}
+                      </Form.Group>
 
-                      
+                      <Form.Group className="mb-3">
+
                         <Form.Control
                           style={
-                            Boolean(errors.password?.message)
-                              ? { borderColor: "red" }
+                            Boolean(errors.confirmPass?.message)
+                              ? { borderColor: "#ED474A" }
                               : { borderColor: "#0E6BA8" }
                           }
                           className="form-control password-input"
                           type="password"
-                          
-                          {...register("password", {
-                            required: "Құпия сөзді енгізіңіз"
+                          {...register("confirmPass", {
+                            required: "Құпия сөзді қайта енгізіңіз",
+                            validate: (val) => {
+                              if (watch("password") !== val) {
+                                return "Құпия сөздер сәйкес келмейді";
+                              }
+                            },
                           })}
-                          placeholder="Құпия сөз"
+                          placeholder="Құпия сөзді қайталаңыз"
                         />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
                         {Boolean(errors.confirmPass?.message) ? (
-                          <Form.Label style={{ color: "red" }}>
+                          <Form.Label style={{ color: "#ED474A" }}>
                             {errors.confirmPass?.message}
                           </Form.Label>
                         ) : (
                           ""
                         )}
 
-                        {!matchedPass? (
-                          <Form.Label style={{ color: "red" }}>
+                        {!matchedPass ? (
+                          <Form.Label style={{ color: "#ED474A" }}>
                             Құпия сөздер сәйкес келмейді
                           </Form.Label>
                         ) : (
                           ""
                         )}
-                        <Form.Control
-                          style={
-                            Boolean(errors.confirmPass?.message)
-                              ? { borderColor: "red" }
-                              : { borderColor: "#0E6BA8" }
-                          }
-                          className="form-control password-input"
-                          type="password"
-                        
-                          {...register("confirmPass", {
-                            required: "Құпия сөзді қайта енгізіңіз",
-                            validate: (val) => {
-                              if (watch('password') != val) {
-                                return "Құпия сөздер сәйкес келмейді"
-                              }
-                            }
-                          })}
-                          placeholder="Құпия сөзді қайталаңыз"
-                        />
                       </Form.Group>
 
                       <div className="mb-3 ">

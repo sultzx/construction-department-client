@@ -1,14 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from '../../axios.js'
 
-export const fetchAuth= createAsyncThunk('auth/fetchAuth', async (params) => {
-    const { data } = await axios.post('/api/auth/login', params)
-    return data
+export const fetchAuth= createAsyncThunk('auth/fetchAuth', async (params, {rejectWithValue}) => {
+    try {
+        const  response  = await axios.post('/api/auth/login', params)
+          return response.data  
+      } catch (error) {
+          if (!error.response) {
+              throw error
+          }
+          return rejectWithValue(error.response.data)
+      } 
 })
 
-export const fetchRegister = createAsyncThunk('auth/fetchRegister', async (params) => {
-    const { data } = await axios.post('/api/auth/registration', params)
-    return data
+export const fetchRegister = createAsyncThunk('auth/fetchRegister', async (params, {rejectWithValue}) => {
+    try {
+      const  response  = await axios.post('/api/auth/registration', params)
+        return response.data  
+    } catch (error) {
+        if (!error.response) {
+            throw error
+        }
+        return rejectWithValue(error.response.data)
+    }    
 })
 
 export const fetchAuthMe= createAsyncThunk('auth/fetchAuthMe', async () => {
@@ -18,7 +32,8 @@ export const fetchAuthMe= createAsyncThunk('auth/fetchAuthMe', async () => {
 
 const initialState = {
     data: null,
-    status: 'loading'
+    status: 'loading',
+    error: ''
 }
 
 const authSlice = createSlice({
@@ -33,15 +48,15 @@ const authSlice = createSlice({
     extraReducers: {
         [fetchAuth.pending]: (state) => {
             state.status = 'loading'
-            state.data = null
+            state.error = ''
         },
         [fetchAuth.fulfilled]: (state, action) => {
             state.status = 'loaded'
             state.data = action.payload
         },
-        [fetchAuth.rejected]: (state) => {
+        [fetchAuth.rejected]: (state, action) => {
             state.status = 'error'
-            state.data = null
+            state.error = action.payload
         },
 
         [fetchAuthMe.pending]: (state) => {
@@ -59,15 +74,17 @@ const authSlice = createSlice({
 
         [fetchRegister.pending]: (state) => {
             state.status = 'loading'
-            state.data = null
+            state.error = ''
         },
         [fetchRegister.fulfilled]: (state, action) => {
             state.status = 'loaded'
             state.data = action.payload
+            
         },
-        [fetchRegister.rejected]: (state) => {
+        [fetchRegister.rejected]: (state, action) => {
+            
             state.status = 'error'
-            state.data = null
+            state.error = action.payload
         }
     }
 })
