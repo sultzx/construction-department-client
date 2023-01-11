@@ -6,11 +6,14 @@ import {
   Breadcrumb,
   Alert,
   Card,
+  Form,
 } from "react-bootstrap";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { selectIsAuth } from "../redux/slices/auth";
+import { selectIsAuth, fetchAuth } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
 import blueProfile from "../images/blue-profile.png";
@@ -19,7 +22,31 @@ const Profile = () => {
   const isAuth = useSelector(selectIsAuth);
 
   const userData = useSelector((state) => state.auth.data);
+  const dispatch = useDispatch();
 
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+
+    setErrorMessage(data.payload.message);
+
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    }
+  };
   return (
     <>
       <section>
@@ -60,40 +87,55 @@ const Profile = () => {
           <hr className="basic-hr" />
           <Row>
             <Col lg={4} md={6} sm={6} xs={12}>
-              <Card className="profile-page-card shadow">
-                <Card.Body 
-                  style={{height: '460px'}}
-                  className=" d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex flex-column justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center justify-content-xxl-center align-items-xxl-center ">
-                  <div className="circular--landscape">
-                  <Card.Img
-                    src={
-                      userData && userData.avatarUrl
-                        ? userData.avatarUrl
-                        : blueProfile
-                    }
-                  />
+              <Card className="profile-page-card" style={{ height: "424px" }}>
+                <Card.Body>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="circular--landscape">
+                      <Card.Img
+                        onClick={() => alert("asd")}
+                        src={
+                          userData && userData.avatarUrl
+                            ? userData.avatarUrl
+                            : blueProfile
+                        }
+                      />
+                    </div>
+
+                    <Card.Title
+                      className="text-center"
+                      style={{
+                        color: "black",
+                      }}
+                    >
+                      {userData && userData.lastname ? userData.lastname : ""}{" "}
+                      {userData && userData.firstname
+                        ? userData.firstname
+                        : " "}{" "}
+                    </Card.Title>
                   </div>
-                  
-                  <Card.Title className="text-center" style={{
-                    color: '#0E6BA8'
-                  }}>
-                    {userData && userData.lastname ? userData.lastname : ""} {" "}
-                    {userData && userData.firstname ? userData.firstname : " "} {" "} <br />
-                    {userData && userData.patronymic ? userData.patronymic : " "}
-                  </Card.Title>
                 </Card.Body>
+                <div className="d-flex justify-content-center card-footer-btn">
+                  <button className="btn btn-primary d-block  upload-btn">
+                    Фото жүктеу
+                  </button>
+                </div>
               </Card>
             </Col>
             <Col lg={8} md={6} sm={6} xs={12}>
-              <Card className="profile-page-card">
+              <Card className="profile-page-card" style={{ height: "424px" }}>
                 <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                        <Card.Text>sdasdasd</Card.Text> 
+                </div>
+                </Card.Body> 
+                <div className="align-items-end d-flex justify-content-start card-footer-btn">
+                    <button 
+                      disabled={!isValid}
+                      type="submit"
+                      className="btn btn-primary d-block  upload-btn">
+                      Мәліметтерді сақтау
+                    </button>
+                  </div>
               </Card>
             </Col>
           </Row>
