@@ -121,6 +121,9 @@ const Profile = () => {
                 </div>
               </Card>
             </Col>
+
+{/* ////////////////////////////////////////////////////////// */}
+
             <Col lg={8} md={6} sm={6} xs={12}>
               <Card className="profile-page-card" style={{ height: "424px" }}>
                 <Card.Body>
