@@ -30,6 +30,18 @@ export const fetchAuthMe= createAsyncThunk('auth/fetchAuthMe', async () => {
     return data
 })
 
+export const fetchUpdateMe= createAsyncThunk('auth/fetchUpdateMe', async (params, {rejectWithValue}) => {
+    try {
+        const  response  = await axios.patch('/api/auth/update-profile', params)
+          return response.data  
+      } catch (error) {
+          if (!error.response) {
+              throw error
+          }
+          return rejectWithValue(error.response.data)
+      }    
+})
+
 const initialState = {
     data: null,
     status: 'loading',
@@ -83,6 +95,19 @@ const authSlice = createSlice({
         },
         [fetchRegister.rejected]: (state, action) => {
             
+            state.status = 'error'
+            state.error = action.payload
+        },
+
+        [fetchUpdateMe.pending]: (state) => {
+            state.status = 'loading'
+            state.error = ''
+        },
+        [fetchUpdateMe.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [fetchUpdateMe.rejected]: (state, action) => {
             state.status = 'error'
             state.error = action.payload
         }

@@ -6,11 +6,11 @@
   box-shadow: 1px 1px 24px #cfe2ff;
 }
 .circular--landscape {
-  margin: 20px;
+  // margin: 20px;
   display: inline-block;
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 309px;
+  height: 309px;
   overflow: hidden;
   border-radius: 50%;
 }
@@ -25,6 +25,33 @@
   cursor: pointer;
 }
 
+
+
+.btn.btn-primary.d-block.remove-img-btn {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background: transparent;
+  color:#0a2472;
+  border-color: #0e6ba8;
+  margin-bottom: 12px;
+  transition: 1s;
+}
+
+
+
+.btn.btn-primary.d-block.upload-btn:hover {
+  opacity: 0.5;
+}
+.card-footer-btn {
+  background: white;
+}
+
+.form-label {
+  color: #0E68A6
+}
+
 .btn.btn-primary.d-block.upload-btn {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
@@ -32,21 +59,20 @@
   border-bottom-left-radius: 2px;
   background: linear-gradient(100deg, #0a2472, #0e6ba8 51%, #5aa6d1);
   border-color: #0e6ba8;
-  
+  margin-bottom: 12px;
+  margin-right: 12px;
   transition: 1s;
-
 }
 
-.btn.btn-primary.d-block.upload-btn:hover { 
-    opacity: 0.5;
+.btn.btn-primary.d-block.submit-btn {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background: linear-gradient(100deg, #0a2472, #0e6ba8 51%, #5aa6d1);
+  border-color: #0e6ba8;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  margin-left: 12px;
+  transition: 1s;
 }
-.card-footer-btn {
-    background: white;
-
-}
-    .card-footer-btn button {
-        margin: 12px
-    }
-
-
-
