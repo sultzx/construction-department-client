@@ -11,10 +11,10 @@ import {
 } from "react-bootstrap";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHref, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
+import { selectIsAuth, fetchUpdateMe, fetchAuthMe, fetchDeleteAvatar } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
 import blueProfile from "../images/blue-profile.png";
@@ -23,7 +23,11 @@ import axios from "../axios.js";
 const Profile = () => {
   const isAuth = useSelector(selectIsAuth);
 
-  const [imageUrl, setImageUrl] = React.useState("");
+  const navigate = useNavigate()
+
+  const userData = useSelector((state) => state.auth.data);
+
+  const dispatch = useDispatch();
 
   const inputFileRef = React.useRef(null);
 
@@ -32,21 +36,19 @@ const Profile = () => {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append("image", file);
-      const { data } = await axios.post("/api/upload", formData);
-      setImageUrl(data.url);
+      const { data } = await axios.post("/api/upload/avatar", formData);
+      console.log(data.url)
     } catch (error) {
       console.warn(error);
       alert("Uploading image error");
     }
+    dispatch(fetchAuthMe())
   };
 
-  const onClickRemoveImage = () => {
-    setImageUrl("");
+  const onClickRemoveImage = async () => {
+    await axios.patch('/api/auth/delete-avatar')
+    dispatch(fetchAuthMe());
   };
-
-  const userData = useSelector((state) => state.auth.data);
-
-  const dispatch = useDispatch();
 
   const [responseMessage, setResponseMessage] = React.useState("");
 
@@ -80,8 +82,7 @@ const Profile = () => {
           city: values.address_city,
           street: values.address_street,
           home: values.address_home,
-        },
-        avatarUrl: imageUrl && imageUrl,
+        }
       })
     );
 
@@ -146,10 +147,10 @@ const Profile = () => {
                   <div className="d-flex flex-column justify-content-center align-items-center">
                     <div className="circular--landscape">
                       <Card.Img
-                        onClick={() => alert("asd")}
+                        onClick={() => document.onload(`http://localhost:4444${userData && userData.avatarUrl}`)}
                         src={
                           userData && userData.avatarUrl
-                            ? userData.avatarUrl
+                            ? `http://localhost:4444${userData.avatarUrl}`
                             : blueProfile
                         }
                       />

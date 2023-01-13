@@ -80,7 +80,7 @@ const Header = () => {
                       className="rounded-circle shadow cover"
                       width="42px"
                       height="auto"
-                      src={userData.avatarUrl ? userData.avatarUrl : blueProfile}
+                      src={userData.avatarUrl ? `http://localhost:4444${userData.avatarUrl}` : blueProfile}
                       alt={"profile"}
                     />
                   </>

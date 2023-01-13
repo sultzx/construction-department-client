@@ -42,6 +42,19 @@ export const fetchUpdateMe= createAsyncThunk('auth/fetchUpdateMe', async (params
       }    
 })
 
+export const fetchDeleteAvatar = createAsyncThunk('auth/fetchDeleteAvatar', async ( {rejectWithValue}) => {
+    // try {
+        // const response = 
+        await axios.patch('/api/auth/delete-avatar')
+    //       return response.data.success  
+    //   } catch (error) {
+    //       if (!error.response) {
+    //           throw error
+    //       }
+    //       return rejectWithValue(error.response.data)
+    //   }    
+})
+
 const initialState = {
     data: null,
     status: 'loading',
@@ -110,6 +123,18 @@ const authSlice = createSlice({
         [fetchUpdateMe.rejected]: (state, action) => {
             state.status = 'error'
             state.error = action.payload
+        },
+
+        [fetchDeleteAvatar.pending]: (state) => {
+            state.status = 'loading'
+            state.error = ''
+        },
+        [fetchDeleteAvatar.fulfilled]: (state) => {
+            state.status = 'loaded'
+            state.data = ''
+        },
+        [fetchDeleteAvatar.rejected]: (state) => {
+            state.status = 'error'
         }
     }
 })
