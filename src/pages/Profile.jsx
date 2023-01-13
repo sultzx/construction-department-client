@@ -34,16 +34,16 @@ const Profile = () => {
       const file = event.target.files[0];
       formData.append("image", file);
       const { data } = await axios.post("/api/upload/avatar", formData);
-      console.log(data.url)
+      console.log(data.url);
     } catch (error) {
       console.warn(error);
       alert("Uploading image error");
     }
-    dispatch(fetchAuthMe())
+    dispatch(fetchAuthMe());
   };
 
   const onClickRemoveImage = async () => {
-    await axios.patch('/api/auth/delete-avatar')
+    await axios.patch("/api/auth/delete-avatar");
     dispatch(fetchAuthMe());
   };
 
@@ -79,7 +79,7 @@ const Profile = () => {
           city: values.address_city,
           street: values.address_street,
           home: values.address_home,
-        }
+        },
       })
     );
 
@@ -138,12 +138,18 @@ const Profile = () => {
           <hr className="basic-hr" />
           <Row>
             <Col lg={4} md={6} sm={6} xs={12}>
-              <Card className="profile-page-card">
+              <Card className={`profile-page-card ${ userData && userData.role === 'user' && 'for-user'}`}>
                 <Card.Body>
                   <div className="d-flex flex-column justify-content-center align-items-center">
                     <div className="circular--landscape">
                       <Card.Img
-                        onClick={() => document.onload(`http://localhost:4444${userData && userData.avatarUrl}`)}
+                        onClick={() =>
+                          document.onload(
+                            `http://localhost:4444${
+                              userData && userData.avatarUrl
+                            }`
+                          )
+                        }
                         src={
                           userData && userData.avatarUrl
                             ? `http://localhost:4444${userData.avatarUrl}`
@@ -464,6 +470,46 @@ const Profile = () => {
                   </div>
                 </Card>
               </Form>
+            </Col>
+            <Col className="col-12">
+              <hr className="basic-hr" />
+            </Col>
+            <Col lg={6} md={6} sm={6} xs={12}>
+              <Card className="profile-page-card">
+                <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                  <Card.Title>Hello World</Card.Title>
+                </Card.Body>
+                <div className="d-flex justify-content-end card-footer-btn">
+                  <ButtonGroup>
+                    {/* <button
+                      className="btn btn-primary d-block  remove-img-btn">
+                      Өшіру
+                    </button> */}
+                    <button className="btn btn-primary d-block  upload-btn">
+                      Жаңалықтар қосу
+                    </button>
+                  </ButtonGroup>
+                </div>
+              </Card>
+            </Col>
+
+            <Col lg={6} md={6} sm={6} xs={12}>
+              <Card className="profile-page-card">
+                <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                  <Card.Title>Hello World</Card.Title>
+                </Card.Body>
+                <div className="d-flex justify-content-end card-footer-btn">
+                  <ButtonGroup>
+                    {/* <button
+                      className="btn btn-primary d-block  remove-img-btn">
+                      Өшіру
+                    </button> */}
+                    <button className="btn btn-primary d-block  upload-btn">
+                      Орындау
+                    </button>
+                  </ButtonGroup>
+                </div>
+              </Card>
             </Col>
           </Row>
         </Container>

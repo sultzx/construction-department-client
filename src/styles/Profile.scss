@@ -2,9 +2,18 @@
   border-radius: 0px;
   border: #5aa6d1 solid 1px;
   border-top-width: 6px;
-  background: linear-gradient(150deg, #0a2472, #0e6ba8 50%, #5aa6d1);
+  background: transparent;
   box-shadow: 1px 1px 24px #cfe2ff;
 }
+
+.for-user {
+  border-radius: 0px;
+  border: #A00000 solid 1px;
+  border-top-width: 6px;
+  background: transparent;
+  box-shadow: 1px 1px 12px #ffd0d0;
+}
+
 .circular--landscape {
   // margin: 20px;
   display: inline-block;

@@ -1,12 +1,13 @@
 import React from "react";
-import { Container, Row, Col, Card, ButtonGroup } from "react-bootstrap";
+import { Card, ButtonGroup } from "react-bootstrap";
+import "../../styles/Newspaper.scss"
 
-const News = ({ title, text, img }) => {
+const ShortNews = ({ title, text, img }) => {
   return (
     <>
-      <Card className="profile-page-card">
+      <Card className="newspaper-page-card" >
+      <Card.Img className="cover responsive-fluid" variant="top" style={{padding: '12px', backgroundColor: 'white'}}  height='180rem' src={img}/>
         <Card.Body>
-          <Card.Img src={img}/>
           <Card.Title>{title}</Card.Title>
           <Card.Text>{text}</Card.Text>
         </Card.Body>
@@ -22,4 +23,4 @@ const News = ({ title, text, img }) => {
   );
 };
 
-export default News;
+export default ShortNews;
