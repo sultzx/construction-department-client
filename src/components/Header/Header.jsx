@@ -7,6 +7,7 @@ import { logout, selectIsAuth } from "../../redux/slices/auth";
 import blueProfile from "../../images/blue-profile.png";
 
 const Header = () => {
+
   const isAuth = useSelector(selectIsAuth);
 
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const Header = () => {
                 <Link to={"/contact"}>
                   <a className="btn btn-outline-light header-link">Байланыс</a>
                 </Link>
+
                 {isAuth ? (
                   <>
                     <NavDropdown

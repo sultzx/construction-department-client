@@ -2,7 +2,6 @@ import {
   Container,
   Row,
   Col,
-  Button,
   ButtonGroup,
   Breadcrumb,
   Alert,
@@ -11,10 +10,10 @@ import {
 } from "react-bootstrap";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHref, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectIsAuth, fetchUpdateMe, fetchAuthMe, fetchDeleteAvatar } from "../redux/slices/auth";
+import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
 import blueProfile from "../images/blue-profile.png";
@@ -22,8 +21,6 @@ import axios from "../axios.js";
 
 const Profile = () => {
   const isAuth = useSelector(selectIsAuth);
-
-  const navigate = useNavigate()
 
   const userData = useSelector((state) => state.auth.data);
 
@@ -123,7 +120,6 @@ const Profile = () => {
             }
           </Alert>
         )}
-
         <Container>
           <Breadcrumb className="breadcrumb-component">
             <Breadcrumb.Item>

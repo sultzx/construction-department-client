@@ -9,6 +9,7 @@ import Registration from './pages/Registration.jsx';
 import Main from './pages/Main.jsx'
 import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
+import Newspaper from './pages/Newspaper.jsx';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/registration' element={<Registration/>}/>
         <Route path='/main' element={<Main/>}/>
+        <Route path='/news' element={<Newspaper/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/profile' element={<Profile/>}/>
       </Routes>
