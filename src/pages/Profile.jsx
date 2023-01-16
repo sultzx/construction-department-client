@@ -7,6 +7,9 @@ import {
   Alert,
   Card,
   Form,
+  Button,
+  Nav,
+  Tab,
 } from "react-bootstrap";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +19,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
+import CRUD from "../components/CRUD/CRUD.jsx";
 import blueProfile from "../images/blue-profile.png";
+import create_document from "../images/create_document.png";
+import read_document from "../images/read_document.png";
+import update_document from "../images/update_document.png";
+import delete_document from "../images/delete_document.png";
+
 import axios from "../axios.js";
 
 const Profile = () => {
@@ -138,7 +147,13 @@ const Profile = () => {
           <hr className="basic-hr" />
           <Row>
             <Col lg={4} md={6} sm={6} xs={12}>
-              <Card className={`profile-page-card ${ userData && userData.role === 'user' && 'for-user'}`}>
+              <Card
+                className={`profile-page-card 
+              ${userData && userData.role === "user" && "for-user"} 
+              ${userData && userData.role === "moderator" && "for-moderator"}  
+              ${userData && userData.role === "admin" && "for-admin"}
+              `}
+              >
                 <Card.Body>
                   <div className="d-flex flex-column justify-content-center align-items-center">
                     <div className="circular--landscape">
@@ -474,43 +489,43 @@ const Profile = () => {
             <Col className="col-12">
               <hr className="basic-hr" />
             </Col>
-            <Col lg={6} md={6} sm={6} xs={12}>
-              <Card className="profile-page-card">
-                <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <Card.Title>Hello World</Card.Title>
-                </Card.Body>
-                <div className="d-flex justify-content-end card-footer-btn">
-                  <ButtonGroup>
-                    {/* <button
-                      className="btn btn-primary d-block  remove-img-btn">
-                      Өшіру
-                    </button> */}
-                    <button className="btn btn-primary d-block  upload-btn">
-                      Жаңалықтар қосу
-                    </button>
-                  </ButtonGroup>
-                </div>
-              </Card>
-            </Col>
-
-            <Col lg={6} md={6} sm={6} xs={12}>
-              <Card className="profile-page-card">
-                <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <Card.Title>Hello World</Card.Title>
-                </Card.Body>
-                <div className="d-flex justify-content-end card-footer-btn">
-                  <ButtonGroup>
-                    {/* <button
-                      className="btn btn-primary d-block  remove-img-btn">
-                      Өшіру
-                    </button> */}
-                    <button className="btn btn-primary d-block  upload-btn">
-                      Орындау
-                    </button>
-                  </ButtonGroup>
-                </div>
-              </Card>
-            </Col>
+            {userData && userData.role === "user" && (
+              // <Row className="text-center">
+              <>
+                <Col lg={3} md={3} sm={6} xs={12}>
+                  <CRUD
+                    icon={create_document}
+                    title={"Жаңалық қосу"}
+                    link={"/create_news"}
+                    style={"create"}
+                  />
+                </Col>
+                <Col lg={3} md={3} sm={6} xs={12}>
+                  <CRUD
+                    icon={read_document}
+                    title={"Жаңалық көрсету"}
+                    link={"/read_news"}
+                    style={"read"}
+                  />
+                </Col>
+                <Col lg={3} md={3} sm={6} xs={12}>
+                  <CRUD
+                    icon={update_document}
+                    title={"Жаңалық жаңарту"}
+                    link={"/update_news"}
+                    style={"update"}
+                  />
+                </Col>
+                <Col lg={3} md={3} sm={6} xs={12}>
+                  <CRUD
+                    icon={delete_document}
+                    title={"Жаңалық өшіру"}
+                    link={"delete_news"}
+                    style={"delete"}
+                  />
+                </Col>
+              </>
+            )}
           </Row>
         </Container>
       </section>

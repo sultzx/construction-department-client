@@ -13,7 +13,7 @@ const ShortNews = ({ title, text, img }) => {
         </Card.Body>
         <div className="d-flex justify-content-end card-footer-btn">
           <ButtonGroup>
-            <button className="btn btn-primary d-block  upload-btn">
+            <button className="btn btn-primary d-block  upload-btn ">
               Толығырақ
             </button>
           </ButtonGroup>
