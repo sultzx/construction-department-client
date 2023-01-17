@@ -233,3 +233,24 @@
   margin-left: 12px;
   transition: 1s;
 }
+
+.tab-panel {
+  border-radius: 1px;
+  border-width: 1px;
+}
+.news-panel-card {
+  border-radius: 1px;
+  border-width: 1px;
+  .card-body {
+    background: linear-gradient(100deg, #0a2472, #0e6ba8 51%, #5aa6d1);
+  }
+  margin-top: -16px;
+  margin-bottom: 14px;
+  border-color: #0000A0;
+  .card-title {
+    color: white
+  }
+  .card-text {
+    color: white
+  }
+}

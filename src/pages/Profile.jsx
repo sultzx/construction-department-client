@@ -10,6 +10,7 @@ import {
   Button,
   Nav,
   Tab,
+  Tabs,
 } from "react-bootstrap";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
-import CRUD from "../components/CRUD/CRUD.jsx";
+import CRUD from "../components/CRUD basic/CRUD.jsx";
 import blueProfile from "../images/blue-profile.png";
 import create_document from "../images/create_document.png";
 import read_document from "../images/read_document.png";
@@ -490,43 +491,69 @@ const Profile = () => {
               <hr className="basic-hr" />
             </Col>
             {userData && userData.role === "user" && (
-              // <Row className="text-center">
-              <>
-                <Col lg={3} md={3} sm={6} xs={12}>
-                  <CRUD
-                    icon={create_document}
-                    title={"Жаңалық қосу"}
-                    link={"/create_news"}
-                    style={"create"}
-                  />
-                </Col>
-                <Col lg={3} md={3} sm={6} xs={12}>
-                  <CRUD
-                    icon={read_document}
-                    title={"Жаңалық көрсету"}
-                    link={"/read_news"}
-                    style={"read"}
-                  />
-                </Col>
-                <Col lg={3} md={3} sm={6} xs={12}>
-                  <CRUD
-                    icon={update_document}
-                    title={"Жаңалық жаңарту"}
-                    link={"/update_news"}
-                    style={"update"}
-                  />
-                </Col>
-                <Col lg={3} md={3} sm={6} xs={12}>
-                  <CRUD
-                    icon={delete_document}
-                    title={"Жаңалық өшіру"}
-                    link={"delete_news"}
-                    style={"delete"}
-                  />
-                </Col>
-              </>
+              <Col>
+                <Tabs
+                  defaultActiveKey="news"
+                  className="mb-3"
+                  style={{ borderRadius: "1px" }}
+                  fill
+                >
+                  <Tab eventKey="news" title="Жаңалық панелі">
+                    <Row>
+                      <Col className="col-12">
+                        <Card className="news-panel-card">
+                          <Card.Body >
+                            <Card.Title>Жаңалық панелі</Card.Title>
+                            <Card.Text>Бұл панелде модератор мәртебесіне ие қолданушы сайт ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру мүмкіндігін қолдана алады.</Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={3} md={3} sm={6} xs={12}>
+                        <CRUD
+                          icon={create_document}
+                          title={"Жаңалық қосу"}
+                          link={"/create_news"}
+                          style={"create"}
+                          btn={"Қосу"}
+                        />
+                      </Col>
+                      <Col lg={3} md={3} sm={6} xs={12}>
+                        <CRUD
+                          icon={read_document}
+                          title={"Жаңалық көрсету"}
+                          link={"/read_news"}
+                          style={"read"}
+                          btn={"Көрсету"}
+                        />
+                      </Col>
+                      <Col lg={3} md={3} sm={6} xs={12}>
+                        <CRUD
+                          icon={update_document}
+                          title={"Жаңалық жаңарту"}
+                          link={"/update_news"}
+                          style={"update"}
+                          btn={"Жаңарту"}
+                        />
+                      </Col>
+                      <Col lg={3} md={3} sm={6} xs={12}>
+                        <CRUD
+                          icon={delete_document}
+                          title={"Жаңалық өшіру"}
+                          link={"delete_news"}
+                          style={"delete"}
+                          btn={"Өшіру"}
+                        />
+                      </Col>
+                    </Row>
+                  </Tab>
+                  <Tab eventKey="profile" title="Profile"></Tab>
+                </Tabs>
+              </Col>
             )}
           </Row>
+          <br />
         </Container>
       </section>
     </>

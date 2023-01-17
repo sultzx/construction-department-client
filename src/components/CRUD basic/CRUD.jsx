@@ -1,7 +1,7 @@
 import { Col, Card, ButtonGroup, Row, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const CRUD = ({ icon, title, link, style}) => {
+const CRUD = ({ icon, title, link, style, btn}) => {
   return (
     <>
       <Card className={`profile-page-card news-${style}`}>
@@ -15,7 +15,7 @@ const CRUD = ({ icon, title, link, style}) => {
         <div className="d-flex justify-content-end card-footer-btn">
           <ButtonGroup>
             <Link style={{textDecoration: 'none'}} to={`${link}`}>
-              <a className={`btn btn-primary d-block news-${style}-btn`} >Қосу</a>
+              <a className={`btn btn-primary d-block news-${style}-btn`} >{btn}</a>
             </Link>
           </ButtonGroup>
         </div>

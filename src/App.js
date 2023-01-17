@@ -10,7 +10,7 @@ import Main from './pages/Main.jsx'
 import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
 import Newspaper from './pages/Newspaper.jsx';
-
+import {CreateNews, ReadNews, UpdateNews, DeleteNews} from './components/News/CRUD/index.js'
 function App() {
 
   const dispatch = useDispatch()
@@ -29,6 +29,10 @@ function App() {
         <Route path='/news' element={<Newspaper/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/create_news' element={<CreateNews/>}/>
+        <Route path='/read_news' element={<ReadNews/>}/>
+        <Route path='/update_news' element={<UpdateNews/>}/>
+        <Route path='/delete_news' element={<DeleteNews/>}/>
       </Routes>
     </>
   );
