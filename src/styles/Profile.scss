@@ -244,7 +244,6 @@
   .card-body {
     background: linear-gradient(100deg, #0a2472, #0e6ba8 51%, #5aa6d1);
   }
-  margin-top: -16px;
   margin-bottom: 14px;
   border-color: #0000A0;
   .card-title {
@@ -253,4 +252,58 @@
   .card-text {
     color: white
   }
+  transition-duration: 0.5s;
+}
+
+
+.news-panel-card:hover {
+  box-shadow: 1px 1px 12px #0e6ba8;
+}
+
+.btn.btn-primary.d-block.link-to-news-crud-btn {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background: transparent;
+  color:white;
+  border-color: white;
+  transition: 1s;
+}
+
+.btn.btn-primary.d-block.link-to-news-crud-btn:hover {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background: whitesmoke;
+  color:#0000A0;
+  border-color: white;
+}
+
+.services-panel-card {
+  border-radius: 1px;
+  border-width: 1px;
+  .card-body {
+    background: linear-gradient(100deg, #0a2472, #0e6ba8 51%, #5aa6d1);
+  }
+  margin-bottom: 14px;
+  border-color: #0000A0;
+  .card-title {
+    color: white
+  }
+  .card-text {
+    color: white
+  }
+  transition-duration: 0.5s;
+}
+
+
+.services-panel-card:hover {
+  box-shadow: 1px 1px 12px #0e6ba8;
+}
+
+.basic-panels-hr {
+  color: #0C488D;
+  margin-top: 4px;
 }

@@ -10,7 +10,7 @@ const BreadLinker = ({ links }) => {
           <>
             <Breadcrumb.Item
               key={i}
-              active={link.isActive}
+              active={true}
               className="breadcrumb-component-item"
               style={{ color: "#267DB5", textDecoration: "none" }}
             >

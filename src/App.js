@@ -10,6 +10,8 @@ import Main from './pages/Main.jsx'
 import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
 import Newspaper from './pages/Newspaper.jsx';
+import NewsCRUDPanel from './components/News/NewsCRUDPanel.jsx';
+
 function App() {
 
   const dispatch = useDispatch()
@@ -28,6 +30,8 @@ function App() {
         <Route path='/news' element={<Newspaper/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/news-crud-panel' element={<NewsCRUDPanel/>}/>
+        
       </Routes>
     </>
   );

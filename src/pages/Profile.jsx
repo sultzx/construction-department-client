@@ -26,6 +26,10 @@ import read_document from "../images/read_document.png";
 import update_document from "../images/update_document.png";
 import delete_document from "../images/delete_document.png";
 import BreadLinker from "../components/BreadLinker/BreadLinker.jsx";
+import megaphone from "../images/megaphone.png";
+import envelope from "../images/envelope.png";
+import project_management from "../images/project-management.png";
+import clipboard from "../images/clipboard.png";
 
 import axios from "../axios.js";
 
@@ -136,12 +140,10 @@ const Profile = () => {
               {
                 url: "/main",
                 name: "Басты бет",
-                isActive: true,
               },
               {
                 url: "/profile",
                 name: "Жеке профиль",
-                isActive: true,
               },
             ]}
           />
@@ -491,35 +493,104 @@ const Profile = () => {
               <hr className="basic-hr" />
             </Col>
             {userData && userData.role === "user" && (
-              <Col>
-                <Tabs
-                  defaultActiveKey="news"
-                  className="mb-3"
-                  style={{ borderRadius: "1px" }}
-                  fill
-                >
-                  <Tab eventKey="news" title="Жаңалық панелі">
-                    <Row>
-                      <Col className="col-12">
-                        <Card className="news-panel-card">
-                          <Card.Body>
-                            <Card.Title>Жаңалық панелі</Card.Title>
-                            <Card.Text>
-                              Бұл панелде модератор мәртебесіне ие қолданушы
-                              сайт ішіндегі жаңалықтарды қосу, оқу, жаңарту,
-                              өшіру мүмкіндігін қолдана алады.
-                            </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={3} md={3} sm={6} xs={12}></Col>
-                    </Row>
-                  </Tab>
-                  <Tab eventKey="profile" title="Profile"></Tab>
-                </Tabs>
-              </Col>
+              <>
+                <Col lg={4} md={4} sm={6} xs={12}>
+                  <Card className="news-panel-card">
+                    <Card.Body>
+                      <Card.Title>Жаңалықтар</Card.Title>
+                      <div className="text-center">
+                        <Card.Img
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            marginTop: "12px",
+                            marginBottom: "12px",
+                          }}
+                          src={envelope}
+                        />
+                      </div>
+                      <Card.Text>
+                        Бұл панелде модератор мәртебесіне ие қолданушы сайт
+                        ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру
+                        мүмкіндігін қолдана алады.
+                      </Card.Text>
+                      <Link
+                        to="/news-crud-panel"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <button className="btn btn-primary d-block link-to-news-crud-btn">
+                          Панелге көшу
+                        </button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={4} md={4} sm={6} xs={12}>
+                  <Card className="services-panel-card">
+                    <Card.Body>
+                      <Card.Title>Сервистер</Card.Title>
+                      <div className="text-center">
+                        <Card.Img
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            marginTop: "12px",
+                            marginBottom: "12px",
+                          }}
+                          src={clipboard}
+                        />
+                      </div>
+                      <Card.Text>
+                        Бұл панелде модератор мәртебесіне ие қолданушы сайт
+                        ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру
+                        мүмкіндігін қолдана алады.
+                      </Card.Text>
+                      <Link
+                        to="/news-crud-panel"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <button className="btn btn-primary d-block link-to-news-crud-btn">
+                          Панелге көшу
+                        </button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col lg={4} md={4} sm={6} xs={12}>
+                  <Card className="services-panel-card">
+                    <Card.Body>
+                      <Card.Title>Жобалар</Card.Title>
+                      <div className="text-center">
+                        <Card.Img
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            marginTop: "12px",
+                            marginBottom: "12px",
+                          }}
+                          src={project_management}
+                        />
+                      </div>
+                      <Card.Text>
+                        Бұл панелде модератор мәртебесіне ие қолданушы сайт
+                        ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру
+                        мүмкіндігін қолдана алады.
+                      </Card.Text>
+                      <Link
+                        to="/news-crud-panel"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <button className="btn btn-primary d-block link-to-news-crud-btn">
+                          Панелге көшу
+                        </button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col className="col-12">
+                  <hr className="basic-panels-hr" />
+                </Col>
+              </>
             )}
           </Row>
           <br />
