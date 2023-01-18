@@ -20,7 +20,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
-import CRUD from "../components/CRUD basic/CRUD.jsx";
 import blueProfile from "../images/blue-profile.png";
 import create_document from "../images/create_document.png";
 import read_document from "../images/read_document.png";
@@ -511,40 +510,7 @@ const Profile = () => {
                     </Row>
                     <Row>
                       <Col lg={3} md={3} sm={6} xs={12}>
-                        <CRUD
-                          icon={create_document}
-                          title={"Жаңалық қосу"}
-                          link={"/create_news"}
-                          style={"create"}
-                          btn={"Қосу"}
-                        />
-                      </Col>
-                      <Col lg={3} md={3} sm={6} xs={12}>
-                        <CRUD
-                          icon={read_document}
-                          title={"Жаңалық көрсету"}
-                          link={"/read_news"}
-                          style={"read"}
-                          btn={"Көрсету"}
-                        />
-                      </Col>
-                      <Col lg={3} md={3} sm={6} xs={12}>
-                        <CRUD
-                          icon={update_document}
-                          title={"Жаңалық жаңарту"}
-                          link={"/update_news"}
-                          style={"update"}
-                          btn={"Жаңарту"}
-                        />
-                      </Col>
-                      <Col lg={3} md={3} sm={6} xs={12}>
-                        <CRUD
-                          icon={delete_document}
-                          title={"Жаңалық өшіру"}
-                          link={"delete_news"}
-                          style={"delete"}
-                          btn={"Өшіру"}
-                        />
+
                       </Col>
                     </Row>
                   </Tab>
