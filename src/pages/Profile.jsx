@@ -25,6 +25,7 @@ import create_document from "../images/create_document.png";
 import read_document from "../images/read_document.png";
 import update_document from "../images/update_document.png";
 import delete_document from "../images/delete_document.png";
+import BreadLinker from "../components/BreadLinker/BreadLinker.jsx";
 
 import axios from "../axios.js";
 
@@ -130,20 +131,20 @@ const Profile = () => {
           </Alert>
         )}
         <Container>
-          <Breadcrumb className="breadcrumb-component">
-            <Breadcrumb.Item>
-              <Link to={"/main"} className="breadcrumb-component-item">
-                Басты бет
-              </Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              active="true"
-              className="breadcrumb-component-item"
-              style={{ color: "#267DB5" }}
-            >
-              Жеке профиль
-            </Breadcrumb.Item>
-          </Breadcrumb>
+          <BreadLinker
+            links={[
+              {
+                url: "/main",
+                name: "Басты бет",
+                isActive: true,
+              },
+              {
+                url: "/profile",
+                name: "Жеке профиль",
+                isActive: true,
+              },
+            ]}
+          />
           <hr className="basic-hr" />
           <Row>
             <Col lg={4} md={6} sm={6} xs={12}>
@@ -501,17 +502,19 @@ const Profile = () => {
                     <Row>
                       <Col className="col-12">
                         <Card className="news-panel-card">
-                          <Card.Body >
+                          <Card.Body>
                             <Card.Title>Жаңалық панелі</Card.Title>
-                            <Card.Text>Бұл панелде модератор мәртебесіне ие қолданушы сайт ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру мүмкіндігін қолдана алады.</Card.Text>
+                            <Card.Text>
+                              Бұл панелде модератор мәртебесіне ие қолданушы
+                              сайт ішіндегі жаңалықтарды қосу, оқу, жаңарту,
+                              өшіру мүмкіндігін қолдана алады.
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg={3} md={3} sm={6} xs={12}>
-
-                      </Col>
+                      <Col lg={3} md={3} sm={6} xs={12}></Col>
                     </Row>
                   </Tab>
                   <Tab eventKey="profile" title="Profile"></Tab>
