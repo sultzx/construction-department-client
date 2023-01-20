@@ -3,14 +3,9 @@ import {
   Row,
   Col,
   ButtonGroup,
-  Breadcrumb,
   Alert,
   Card,
-  Form,
-  Button,
-  Nav,
-  Tab,
-  Tabs,
+  Form
 } from "react-bootstrap";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -21,12 +16,7 @@ import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
 import blueProfile from "../images/blue-profile.png";
-import create_document from "../images/create_document.png";
-import read_document from "../images/read_document.png";
-import update_document from "../images/update_document.png";
-import delete_document from "../images/delete_document.png";
 import BreadLinker from "../components/BreadLinker/BreadLinker.jsx";
-import megaphone from "../images/megaphone.png";
 import envelope from "../images/envelope.png";
 import project_management from "../images/project-management.png";
 import clipboard from "../images/clipboard.png";
