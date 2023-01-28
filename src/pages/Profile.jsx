@@ -192,7 +192,7 @@ const Profile = () => {
                       onClick={() => {
                         inputFileRef.current.click();
                       }}
-                      className="btn btn-primary d-block  upload-btn"
+                      className="btn btn-primary d-block upload-btn"
                     >
                       Жүктеу
                     </button>

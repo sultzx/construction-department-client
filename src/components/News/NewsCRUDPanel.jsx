@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Alert } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 
+import updateNews from '../../svg/update-news.jsx'
+
 import { selectIsAuth } from "../../redux/slices/auth.js";
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
+import "./style.scss";
 
 const NewsCRUDPanel = () => {
   const dispatch = useDispatch();
@@ -44,45 +47,73 @@ const NewsCRUDPanel = () => {
     {
       no: 1,
       img: <img src="" alt="" />,
-      title: 'Asdasd',
-      date: '2500',
-      text: 'asdasd asdads asdad',
-      option: <button className="btn btn-outline-primary">click</button>
-
+      title: "Asdasd",
+      date: "2500",
+      text: "asdasd asdads asdad",
+      option: (
+        <div className="text-center">
+          <button className="btn btn-primary update-news-btn">
+            Жаңарту
+          </button>
+          <button className="btn btn-primary delete-news-btn">Өшіру</button>
+        </div>
+      ),
     },
     {
       no: 2,
       img: <img src="" alt="" />,
-      title: 'Asdasd',
-      date: '2500',
-      text: 'asdasd asdads asdad',
-      option: <button className="btn btn-outline-primary">click</button>
+      title: "Asdasd",
+      date: "2500",
+      text: "asdasd asdads asdad",
+      option: (
+        <div className="text-center">
+          <button className="btn btn-primary update-news-btn">Жаңарту</button>
+          <button className="btn btn-primary delete-news-btn">Өшіру</button>
+        </div>
+      ),
     },
     {
       no: 3,
       img: <img src="" alt="" />,
-      title: 'Asdasd',
-      date: '2500',
-      text: 'asdasd asdads asdad sdcsd sdcsd sdcsd sdcsd sdcsd sdcsd',
-      option: <button className="btn btn-outline-primary">click</button>
+      title: "Asdasd",
+      date: "2500",
+      text: "asdasd asdads asdad sdcsd sdcsd sdcsd sdcsd sdcsd sdcsd",
+      option: (
+        <div className="text-center">
+          <button className="btn btn-primary update-news-btn">Жаңарту</button>
+          <button className="btn btn-primary delete-news-btn">Өшіру</button>
+        </div>
+      ),
     },
     {
       no: 4,
       img: <img src="" alt="" />,
-      title: 'Asdasd c',
-      date: '2500',
-      text: 'asdasd asdads asdad',
-      option: <button className="btn btn-outline-primary">click</button>
-    },    {
+      title: "Asdasd c",
+      date: "2500",
+      text: "asdasd asdads asdad",
+      option: (
+        <div className="text-center">
+          <button className="btn btn-primary update-news-btn">Жаңарту</button>
+          <button className="btn btn-primary delete-news-btn">Өшіру</button>
+        </div>
+      ),
+    },
+    {
       no: 5,
       img: <img src="" alt="" />,
-      title: 'Asdasd',
-      date: '2500',
-      text: 'asdasd asdads asdaddcsdcsc',
-      option: <button className="btn btn-outline-primary">click</button>
-    }
-    
-  ]
+      title: "Asdasd",
+      date: "2500",
+      text: "asdasd asdads asdaddcsdcsc",
+      option: (
+        <div className="text-center">
+          <button className="btn btn-primary update-news-btn">
+            Жаңарту
+          </button>
+          <button className="btn btn-primary delete-news-btn">Өшіру</button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -141,8 +172,11 @@ const NewsCRUDPanel = () => {
                 data={products}
                 condensed
                 columns={columns}
-                noDataIndication='Жаңалықтар дерекқорда жоқ'
+                noDataIndication="Жаңалықтар дерекқорда жоқ"
               />
+            </Col>
+            <Col lg={12}>
+              <button className="btn btn-primary create-news-btn">Жаңалық қосу</button>
             </Col>
           </Row>
         </Container>
