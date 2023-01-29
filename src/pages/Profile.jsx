@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
+
 import blueProfile from "../images/blue-profile.png";
 import BreadLinker from "../components/BreadLinker/BreadLinker.jsx";
 import envelope from "../images/envelope.png";
@@ -95,6 +96,7 @@ const Profile = () => {
       window.localStorage.setItem("token", data.payload.token);
     }
   };
+
   return (
     <>
       <section>

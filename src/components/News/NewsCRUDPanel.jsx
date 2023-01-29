@@ -2,14 +2,17 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Alert } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import updateNews from '../../svg/update-news.jsx'
+import updateNews from "../../svg/update-news.jsx";
 
 import { selectIsAuth } from "../../redux/slices/auth.js";
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
 import "./style.scss";
 
 const NewsCRUDPanel = () => {
+
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
@@ -52,67 +55,13 @@ const NewsCRUDPanel = () => {
       text: "asdasd asdads asdad",
       option: (
         <div className="text-center">
-          <button className="btn btn-primary update-news-btn">
-            Жаңарту
-          </button>
-          <button className="btn btn-primary delete-news-btn">Өшіру</button>
-        </div>
-      ),
-    },
-    {
-      no: 2,
-      img: <img src="" alt="" />,
-      title: "Asdasd",
-      date: "2500",
-      text: "asdasd asdads asdad",
-      option: (
-        <div className="text-center">
+          <Link to={`update/${1235456789}`}>
           <button className="btn btn-primary update-news-btn">Жаңарту</button>
+          </Link>
           <button className="btn btn-primary delete-news-btn">Өшіру</button>
         </div>
       ),
-    },
-    {
-      no: 3,
-      img: <img src="" alt="" />,
-      title: "Asdasd",
-      date: "2500",
-      text: "asdasd asdads asdad sdcsd sdcsd sdcsd sdcsd sdcsd sdcsd",
-      option: (
-        <div className="text-center">
-          <button className="btn btn-primary update-news-btn">Жаңарту</button>
-          <button className="btn btn-primary delete-news-btn">Өшіру</button>
-        </div>
-      ),
-    },
-    {
-      no: 4,
-      img: <img src="" alt="" />,
-      title: "Asdasd c",
-      date: "2500",
-      text: "asdasd asdads asdad",
-      option: (
-        <div className="text-center">
-          <button className="btn btn-primary update-news-btn">Жаңарту</button>
-          <button className="btn btn-primary delete-news-btn">Өшіру</button>
-        </div>
-      ),
-    },
-    {
-      no: 5,
-      img: <img src="" alt="" />,
-      title: "Asdasd",
-      date: "2500",
-      text: "asdasd asdads asdaddcsdcsc",
-      option: (
-        <div className="text-center">
-          <button className="btn btn-primary update-news-btn">
-            Жаңарту
-          </button>
-          <button className="btn btn-primary delete-news-btn">Өшіру</button>
-        </div>
-      ),
-    },
+    }
   ];
 
   return (
@@ -130,7 +79,7 @@ const NewsCRUDPanel = () => {
                   кіріңіз
                 </span>
               </div>
-            }
+            }params
           </Alert>
         ) : (
           <Alert
@@ -176,7 +125,11 @@ const NewsCRUDPanel = () => {
               />
             </Col>
             <Col lg={12}>
-              <button className="btn btn-primary create-news-btn">Жаңалық қосу</button>
+              <Link to={`create`}>
+                <button className="btn btn-primary create-news-btn">
+                  Жаңалық қосу
+                </button>
+              </Link>
             </Col>
           </Row>
         </Container>
