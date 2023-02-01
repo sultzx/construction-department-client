@@ -41,3 +41,43 @@
     background: transparent;
     color: green;
 }
+
+.tiny-news-card {
+    border-radius: 1px;
+    border-width: 1px;
+    margin-bottom: -1px;
+    border-color: #0e6ba8;
+    background: transparent;
+    transition-duration: 1s;
+    .card-body {
+        background-color: transparent;
+        transition-duration: 1s; 
+     }
+     .darked-card-body.card-body {
+        background-color: #F0F0F0;
+    }
+}
+
+.tiny-news-card:hover {
+    color: white;
+    .card-body {
+       background-color: #58A4D0; 
+    }
+    .delete-news-btn {
+        color: white;
+        border-color: white;
+        background: #900000;
+    }
+
+    .delete-news-btn:hover {
+        color: white;
+        border-color: white;
+        background: transparent;
+    }
+
+    .update-news-btn {
+        border-color: white;
+        color: white
+    }
+}
+

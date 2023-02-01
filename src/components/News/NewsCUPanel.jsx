@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { selectIsAuth } from "../../redux/slices/auth.js";
+import { fetchCreateNews, fetchUpdateNews, fetchGetOneNews, fetchGetAllNews } from "../../redux/slices/news.js";
+
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
 
 const NewsCUPanel = () => {
@@ -14,6 +16,14 @@ const NewsCUPanel = () => {
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
+
+  const {one} = useSelector((state) => state.news);
+
+  React.useEffect(() => {
+      dispatch(fetchGetOneNews(id))
+  }, [])
+
+  one && console.log(one.items && one.items.data, 'oneone')
 
   const [responseMessage, setResponseMessage] = React.useState("");
 
@@ -36,28 +46,28 @@ const NewsCUPanel = () => {
   });
 
   const onSubmit = async (values) => {
-    const data = await dispatch(
-      fetchUpdateMe({
-        lastname: values.lastname,
-        firstname: values.firstname,
-        patronymic: values.patronymic,
-        phone: values.phone,
-        address: {
-          region: values.address_region,
-          city: values.address_city,
-          street: values.address_street,
-          home: values.address_home,
-        },
-      })
-    );
+    // const data = await dispatch(
+    //   fetchUpdateMe({
+    //     lastname: values.lastname,
+    //     firstname: values.firstname,
+    //     patronymic: values.patronymic,
+    //     phone: values.phone,
+    //     address: {
+    //       region: values.address_region,
+    //       city: values.address_city,
+    //       street: values.address_street,
+    //       home: values.address_home,
+    //     },
+    //   })
+    // );
 
-    dispatch(fetchAuthMe());
+    // dispatch(fetchAuthMe());
 
-    setResponseMessage(data.payload.message);
+    // setResponseMessage(data.payload.message);
 
-    if ("token" in data.payload) {
-      window.localStorage.setItem("token", data.payload.token);
-    }
+    // if ("token" in data.payload) {
+    //   window.localStorage.setItem("token", data.payload.token);
+    // }
   };
 
   return (

@@ -7,62 +7,35 @@ import { useParams } from "react-router-dom";
 
 import updateNews from "../../svg/update-news.jsx";
 
+import { fetchDeleteNews, fetchGetAllNews } from "../../redux/slices/news.js";
+
 import { selectIsAuth } from "../../redux/slices/auth.js";
+
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
 import "./style.scss";
+import TinyNews from "./TinyNews.jsx";
 
 const NewsCRUDPanel = () => {
-
+  
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  const [responseMessage, setResponseMessage] = React.useState("");
+  const {news} = useSelector((state) => state.news);
 
-  const columns = [
-    {
-      dataField: "no",
-      text: "",
-    },
-    {
-      dataField: "img",
-      text: "Бейнесі",
-    },
-    {
-      dataField: "title",
-      text: "Тақырыбы",
-    },
-    {
-      dataField: "date",
-      text: "Уақыты",
-    },
-    {
-      dataField: "text",
-      text: "Толығырақ",
-    },
-    {
-      dataField: "option",
-      text: "Опция",
-    },
-  ];
+  const isNewsLoading = news && news.status === "loading";
 
-  const products = [
-    {
-      no: 1,
-      img: <img src="" alt="" />,
-      title: "Asdasd",
-      date: "2500",
-      text: "asdasd asdads asdad",
-      option: (
-        <div className="text-center">
-          <Link to={`update/${1235456789}`}>
-          <button className="btn btn-primary update-news-btn">Жаңарту</button>
-          </Link>
-          <button className="btn btn-primary delete-news-btn">Өшіру</button>
-        </div>
-      ),
-    }
-  ];
+  React.useEffect(() => {
+    dispatch(fetchGetAllNews());
+  }, []);
+
+  const [responseMessage, setResponseMessage] = React.useState('');
+
+  const handleGetResponse = (response) => {
+    setResponseMessage(response)
+  }
+
+  console.log(responseMessage && responseMessage)
 
   return (
     <>
@@ -79,7 +52,7 @@ const NewsCRUDPanel = () => {
                   кіріңіз
                 </span>
               </div>
-            }params
+            }
           </Alert>
         ) : (
           <Alert
@@ -112,19 +85,22 @@ const NewsCRUDPanel = () => {
           />
           <hr className="basic-hr" />
           <Row>
-            <Col lg={12}>
-              <h3>Жаңалықтар панелі</h3>
-              <BootstrapTable
-                keyField="id"
-                striped
-                hover
-                data={products}
-                condensed
-                columns={columns}
-                noDataIndication="Жаңалықтар дерекқорда жоқ"
-              />
-            </Col>
-            <Col lg={12}>
+          <h3>{`Жаңалықтар панелі`}</h3>
+            {!isNewsLoading && news &&
+              news.items &&
+              news.items.map((news, index) => (
+                <TinyNews
+                  key={index}
+                  i={index}
+                  id={news._id}
+                  title={news.title}
+                  date={news.date}
+                  text={news.text}
+                  imageUrl={news.imageUrl}
+                  response={handleGetResponse}
+                  />
+              ))}
+            <Col lg={12} style={{marginTop: '12px', marginBottom: '12px'}}>
               <Link to={`create`}>
                 <button className="btn btn-primary create-news-btn">
                   Жаңалық қосу
