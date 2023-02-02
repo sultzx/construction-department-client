@@ -12,6 +12,7 @@ import Profile from './pages/Profile.jsx';
 import Newspaper from './pages/Newspaper.jsx';
 import NewsCRUDPanel from './components/News/NewsCRUDPanel.jsx';
 import NewsCUPanel from './components/News/NewsCUPanel';
+import NewsCreatePanel from './components/News/NewsCreatePanel.jsx';
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/news-crud-panel' element={<NewsCRUDPanel/>}/>
-        <Route path='/news-crud-panel/create' element={<NewsCUPanel/>}/>
+        <Route path='/news-crud-panel/create' element={<NewsCreatePanel/>}/>
         <Route path='/news-crud-panel/update/:id' element={<NewsCUPanel/>}/>
         
       </Routes>

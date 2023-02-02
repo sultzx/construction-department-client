@@ -16,7 +16,6 @@ import { selectIsAuth, fetchAuthMe } from "../../redux/slices/auth.js";
 import {
   fetchCreateNews,
   fetchUpdateNews,
-  fetchGetOneNews,
   fetchGetAllNews,
 } from "../../redux/slices/news.js";
 
@@ -24,8 +23,7 @@ import axios from "../../axios.js";
 
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
 
-const NewsCUPanel = () => {
-  const { id } = useParams();
+const NewsCreatePanel = () => {
 
   const dispatch = useDispatch();
 
@@ -33,27 +31,14 @@ const NewsCUPanel = () => {
 
   const { news } = useSelector((state) => state.news);
 
-  const oneNews = [];
-
   const [newsImageUrl, setNewsImageUrl] = React.useState("");
 
   React.useEffect(() => {
     dispatch(fetchGetAllNews());
   }, []);
 
-  news &&
-    news.items &&
-    news.items.forEach((item, i) => {
-      if (item._id === id) {
-        oneNews.push(item);
-      }
-    });
 
-  const [formatedDate, setDate] = React.useState(
-    oneNews[0] &&
-      oneNews[0].date &&
-      new Date(oneNews[0].date).toISOString().split("T")[0]
-  );
+  const [formatedDate, setDate] = React.useState('');
 
   const inputFileRef = React.useRef(null);
 
@@ -62,8 +47,7 @@ const NewsCUPanel = () => {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append("image", file);
-      id && formData.append("id", id);
-      console.log(file);
+
       const { data } = await axios.post(
         `/api/upload/newspaper/`,
         formData
@@ -85,22 +69,14 @@ const NewsCUPanel = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      title: oneNews[0] && oneNews[0].title,
-      text: oneNews[0] && oneNews[0].text,
+      title: '',
+      text: '',
     },
     mode: "onChange",
   });
 
   const onSubmit = async (values) => {
-    const data = id ? await dispatch(
-      fetchUpdateNews({
-        id: id,
-        title: values.title,
-        date: formatedDate && formatedDate,
-        text: values.text,
-        imageUrl: oneNews[0] && oneNews[0].imageUrl ? oneNews[0].imageUrl : `http://localhost:4444${newsImageUrl}`,
-      })
-    ) : await dispatch(
+    const data = await dispatch(
       fetchCreateNews({
         title: values.title,
         date: formatedDate && formatedDate,
@@ -162,17 +138,14 @@ const NewsCUPanel = () => {
                 name: "Жаңалықтар панелі",
               },
               {
-                url:
-                  id && id
-                    ? `/news-crud-panel/update/${id && id}`
-                    : "/news-crud-panel/create",
-                name: id && id ? `${id && id}` : "Қосу",
+                url: "/news-crud-panel/create",
+                name: "Қосу",
               },
             ]}
           />
           <hr className="basic-hr" />
           <Row>
-            <h3>{id && id ? `Жаңарту` : `Жаңалық қосу`}</h3>
+            <h3>{`Жаңалық қосу`}</h3>
             <Col lg={12} md={12} sm={12} xs={12}>
               <Form onSubmit={handleSubmit(onSubmit)} method="post">
                 <Card className="profile-page-card">
@@ -184,6 +157,7 @@ const NewsCUPanel = () => {
                             <Col xs={12} sm={12} md={12} lg={12}>
                               <Form.Label>Тақырыбы</Form.Label>
                               <Form.Control
+                                disabled={!newsImageUrl}
                                 style={
                                   Boolean(errors.title?.message)
                                     ? { borderColor: "#ED474A" }
@@ -191,7 +165,6 @@ const NewsCUPanel = () => {
                                 }
                                 className="firstname-input"
                                 type="text"
-                                placeholder={oneNews[0] && oneNews[0].title}
                                 {...register("title", {
                                   required: "Тақырыбын енгізіңіз",
                                   minLength: {
@@ -237,6 +210,7 @@ const NewsCUPanel = () => {
                             >
                               <Form.Label>Толығырақ</Form.Label>
                               <Form.Control
+                                disabled={!newsImageUrl}
                                 as="textarea"
                                 rows={10}
                                 style={
@@ -245,7 +219,6 @@ const NewsCUPanel = () => {
                                     : { borderColor: "#0E6BA8" }
                                 }
                                 className="firstname-input"
-                                placeholder={oneNews[0] && oneNews[0].text}
                                 type="text"
                                 {...register("text", {
                                   required: "Тақырыбын енгізіңіз",
@@ -280,20 +253,8 @@ const NewsCUPanel = () => {
                                     borderColor: '#58A4D0',
                                     padding: '22px'
                                   }}>
-                              { (
-                                <img
-                                style={{ height: "320px" }}
-                                  hidden={newsImageUrl}
-                                  className="img-fluid"
-                                  src={
-                                    oneNews[0] &&
-                                    oneNews[0].imageUrl &&
-                                    oneNews[0].imageUrl
-                                  }
-                                  alt="asdasd"
-                                />
-                              )}
-                              {oneNews[0] && oneNews[0].imageUrl && (
+
+                              {newsImageUrl && (
                                 <img
                                   hidden={!newsImageUrl}
                                   style={{ height: "320px" }}
@@ -349,7 +310,7 @@ const NewsCUPanel = () => {
                   </Card.Body>
                   <div className="align-items-end d-flex justify-content-start card-footer-btn">
                     <button
-                      disabled={!isValid && !newsImageUrl}
+                      disabled={!isValid || !newsImageUrl}
                       type="submit"
                       className="btn btn-primary d-block  submit-btn" >
                       Мәліметтерді сақтау
@@ -365,4 +326,4 @@ const NewsCUPanel = () => {
   );
 };
 
-export default NewsCUPanel;
+export default NewsCreatePanel;

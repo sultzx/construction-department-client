@@ -48,10 +48,10 @@
     margin-bottom: -1px;
     border-color: #0e6ba8;
     background: transparent;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
     .card-body {
         background-color: transparent;
-        transition-duration: 1s; 
+        transition-duration: 0.3s; 
      }
      .darked-card-body.card-body {
         background-color: #F0F0F0;
@@ -81,7 +81,6 @@
     }
 }
 
-
 .news-image-upload-btn {
     color: white;
     background: #0e6ba8;
@@ -95,4 +94,3 @@
     border-width: 1px;
     border-radius: 1px;
 }
-

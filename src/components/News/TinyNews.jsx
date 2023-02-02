@@ -32,8 +32,8 @@ const TinyNews = ({ id, i, title, date, text, imageUrl, response}) => {
             <Col className="col-1 d-flex justify-content-start align-items-center">
               <span style={{fontSize: '20px', color: '#0A2674'}}>{i + 1}</span>
             </Col>
-            <Col className="text-center d-flex justify-content-start align-items-center">
-              <img src={imageUrl} width="200px" style={{margin: '-8px'}} alt="" />
+            <Col style={{height: '150px'}} className="text-center d-flex justify-content-start align-items-center">
+              <img src={imageUrl} width="150px"  className="img-fluid" style={{margin: '-8px'}} alt="" />
             </Col>
             <Col className="col-1 d-flex justify-content-start align-items-center">
               {title}
