@@ -43,7 +43,8 @@ export const fetchUpdateNews = createAsyncThunk(
   "news/fetchUpdateNews",
   async (params, { rejectWithValue }) => {
     try {
-      const response = await axios.patch("/api/news", params);
+      console.log('id', params, 'params')
+      const response = await axios.patch(`/api/news/`, params);
       return response.data;
     } catch (error) {
       if (!error.response) {
@@ -117,16 +118,14 @@ const newsSlice = createSlice({
     },
 
     [fetchUpdateNews.pending]: (state) => {
-      state.status = "loading";
-      state.error = "";
+      state.news.status = "loading";
+      state.news.error = "";
     },
     [fetchUpdateNews.fulfilled]: (state, action) => {
-      state.status = "loaded";
-      state.news = action.payload;
+      state.news.status = "loaded";
     },
     [fetchUpdateNews.rejected]: (state, action) => {
-      state.status = "error";
-      state.error = action.payload;
+      state.news.status = "error";
     },
 
 

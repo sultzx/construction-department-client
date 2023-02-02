@@ -40,6 +40,7 @@ const Profile = () => {
       formData.append("image", file);
       const { data } = await axios.post("/api/upload/avatar", formData);
       console.log(data.url);
+      console.log('asdasd');
     } catch (error) {
       console.warn(error);
       alert("Uploading image error");

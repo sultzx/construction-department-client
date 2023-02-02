@@ -35,8 +35,6 @@ const NewsCRUDPanel = () => {
     setResponseMessage(response)
   }
 
-  console.log(responseMessage && responseMessage)
-
   return (
     <>
       <section>
@@ -94,7 +92,7 @@ const NewsCRUDPanel = () => {
                   i={index}
                   id={news._id}
                   title={news.title}
-                  date={news.date}
+                  date={news.date && new Date(news.date).toISOString().split('T')[0]}
                   text={news.text}
                   imageUrl={news.imageUrl}
                   response={handleGetResponse}

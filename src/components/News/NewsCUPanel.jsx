@@ -1,29 +1,77 @@
 import React from "react";
-import { Container, Row, Col, Button, Alert, Card, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Alert,
+  Card,
+  Form,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { selectIsAuth } from "../../redux/slices/auth.js";
-import { fetchCreateNews, fetchUpdateNews, fetchGetOneNews, fetchGetAllNews } from "../../redux/slices/news.js";
+import { selectIsAuth, fetchAuthMe } from "../../redux/slices/auth.js";
+import {
+  fetchCreateNews,
+  fetchUpdateNews,
+  fetchGetOneNews,
+  fetchGetAllNews,
+} from "../../redux/slices/news.js";
+
+import axios from "../../axios.js";
 
 import BreadLinker from "../BreadLinker/BreadLinker.jsx";
 
 const NewsCUPanel = () => {
-
   const { id } = useParams();
 
   const dispatch = useDispatch();
 
   const isAuth = useSelector(selectIsAuth);
 
-  const {one} = useSelector((state) => state.news);
+  const { news } = useSelector((state) => state.news);
+
+  const oneNews = [];
+
+  const [newsImageUrl, setNewsImageUrl] = React.useState("");
 
   React.useEffect(() => {
-      dispatch(fetchGetOneNews(id))
-  }, [])
+    dispatch(fetchGetAllNews());
+  }, []);
 
-  one && console.log(one.items && one.items.data, 'oneone')
+  news &&
+    news.items &&
+    news.items.forEach((item, i) => {
+      if (item._id === id) {
+        oneNews.push(item);
+      }
+    });
+
+  const [formatedDate, setDate] = React.useState(
+    oneNews[0] &&
+      oneNews[0].date &&
+      new Date(oneNews[0].date).toISOString().split("T")[0]
+  );
+
+  const inputFileRef = React.useRef(null);
+
+  const handleChangeFile = async (event) => {
+    try {
+      const formData = new FormData();
+      const file = event.target.files[0];
+      formData.append("image", file);
+      console.log(file);
+      const { data } = await axios.post("/api/upload/newspaper", formData);
+      setNewsImageUrl(data && data.url);
+      console.log(data.url);
+    } catch (error) {
+      console.warn(error);
+      alert("Uploading newspaper error");
+    }
+    dispatch(fetchAuthMe());
+  };
 
   const [responseMessage, setResponseMessage] = React.useState("");
 
@@ -33,42 +81,42 @@ const NewsCUPanel = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      // lastname: userData && userData.lastname,
-      // firstname: userData && userData.firstname,
-      // patronymic: userData && userData.patronymic,
-      // phone: userData && userData.phone,
-      // address_region: userData && userData.address && userData.address.region,
-      // address_city: userData && userData.address && userData.address.city,
-      // address_street: userData && userData.address && userData.address.street,
-      // address_home: userData && userData.address && userData.address.home,
+      title: oneNews[0] && oneNews[0].title,
+      date: oneNews[0] && oneNews[0].date,
+      text: oneNews[0] && oneNews[0].text,
+      imageUrl: oneNews[0] && oneNews[0].imageUrl,
     },
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const onSubmit = async (values) => {
-    // const data = await dispatch(
-    //   fetchUpdateMe({
-    //     lastname: values.lastname,
-    //     firstname: values.firstname,
-    //     patronymic: values.patronymic,
-    //     phone: values.phone,
-    //     address: {
-    //       region: values.address_region,
-    //       city: values.address_city,
-    //       street: values.address_street,
-    //       home: values.address_home,
-    //     },
-    //   })
-    // );
+    const data = await dispatch(
+      fetchUpdateNews({
+        id: id,
+        title: values.title,
+        date: formatedDate && formatedDate,
+        text: values.text,
+        imageUrl: newsImageUrl && `http://localhost:4444${newsImageUrl}`,
+      })
+    );
 
-    // dispatch(fetchAuthMe());
+    dispatch(fetchAuthMe());
 
-    // setResponseMessage(data.payload.message);
+    setResponseMessage(data.payload.message);
 
-    // if ("token" in data.payload) {
-    //   window.localStorage.setItem("token", data.payload.token);
-    // }
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    }
   };
+
+  const putImage = () => {
+    if (oneNews[0] && oneNews[0].imageUrl) {
+      return oneNews[0].imageUrl
+    } 
+    else {
+      return `http://localhost:4444${newsImageUrl}`
+    }
+  }
 
   return (
     <>
@@ -126,17 +174,187 @@ const NewsCUPanel = () => {
           <hr className="basic-hr" />
           <Row>
             <h3>{id && id ? `Жаңарту` : `Жаңалық қосу`}</h3>
-            <Col>{id && id}</Col>
             <Col lg={12} md={12} sm={12} xs={12}>
               <Form onSubmit={handleSubmit(onSubmit)} method="post">
                 <Card className="profile-page-card">
                   <Card.Body>
                     <div className="d-flex flex-column justify-content-center">
                       <Row>
-                        <Col></Col>
+                        <Col className="col-6">
+                          <Row>
+                            <Col xs={12} sm={12} md={12} lg={12}>
+                              <Form.Label>Тақырыбы</Form.Label>
+                              <Form.Control
+                                style={
+                                  Boolean(errors.title?.message)
+                                    ? { borderColor: "#ED474A" }
+                                    : { borderColor: "#0E6BA8" }
+                                }
+                                className="firstname-input"
+                                type="text"
+                                placeholder={oneNews[0] && oneNews[0].title}
+                                {...register("title", {
+                                  required: "Тақырыбын енгізіңіз",
+                                  minLength: {
+                                    value: 3,
+                                    message:
+                                      "Тақырыбы 3 символдан кем болмауы керек",
+                                  },
+                                })}
+                              />
+                              {Boolean(errors.title?.message) ? (
+                                <Form.Label style={{ color: "#EF393B" }}>
+                                  {errors.title?.message}
+                                </Form.Label>
+                              ) : (
+                                ""
+                              )}
+                            </Col>
+                            {/* ////////////////////////////////////////// */}
+                            <Col
+                              xs={12}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              style={{ marginTop: "12px" }}
+                            >
+                              <Form.Label>Уақыты</Form.Label>
+                              <input
+                                style={
+                                  Boolean(errors.date?.message)
+                                    ? { borderColor: "#ED474A" }
+                                    : { borderColor: "#0E6BA8" }
+                                }
+                                className="form-control firstname-input"
+                                type="date"
+                                defaultValue={formatedDate}
+                                onChange={(event) =>
+                                  setDate(event.target.value)
+                                }
+                              />
+                              {Boolean(errors.date?.message) ? (
+                                <Form.Label style={{ color: "#EF393B" }}>
+                                  {errors.date?.message}
+                                </Form.Label>
+                              ) : (
+                                ""
+                              )}
+                            </Col>
+                            <Col
+                              xs={12}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              style={{ marginTop: "12px" }}
+                            >
+                              <Form.Label>Толығырақ</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                rows={8}
+                                style={
+                                  Boolean(errors.text?.message)
+                                    ? { borderColor: "#ED474A" }
+                                    : { borderColor: "#0E6BA8" }
+                                }
+                                className="firstname-input"
+                                placeholder={oneNews[0] && oneNews[0].text}
+                                type="text"
+                                {...register("text")}
+                              />
+                              {Boolean(errors.text?.message) ? (
+                                <Form.Label style={{ color: "#EF393B" }}>
+                                  {errors.text?.message}
+                                </Form.Label>
+                              ) : (
+                                ""
+                              )}
+                            </Col>
+                          </Row>
+                        </Col>
+                        {/* //////////////////////////////////// */}
+
+                        {/* ////////////////////////////////////////////// */}
+
+                        <Col xs={12} sm={12} md={6} lg={6}>
+                          <Form.Label>Бейнесі</Form.Label>
+                          <div className="text-center">
+                          <div>
+                            { oneNews[0] && oneNews[0].imageUrl &&
+                              <img
+                              hidden={newsImageUrl}
+                              style={{ width: "626px", height: "320px" }}
+                              className="img-fluid"
+                              src={
+                                oneNews[0] && oneNews[0].imageUrl && oneNews[0].imageUrl
+                              }
+                              alt="asdasd"
+                            />
+                            }
+                            { oneNews[0] && oneNews[0].imageUrl &&
+                              <img
+                              hidden={!newsImageUrl}
+                              style={{ width: "626px", height: "320px" }}
+                              className="img-fluid"
+                              src={
+                                `http://localhost:4444${newsImageUrl}`
+                              }
+                              alt='qwd'
+                            />}
+                          </div>
+
+                          </div>
+                          <Row
+                            style={{
+                              paddingLeft: "12px",
+                              paddingRight: "12px",
+                              marginTop: "12px",
+                            }}
+                          >
+                            <button
+                              onClick={() => {
+                                inputFileRef.current.click();
+                              }}
+                              className="btn news-image-upload-btn"
+                            >
+                              <div className="text-center">Жүктеу</div>
+                            </button>
+                          </Row>
+                          <input
+                            style={
+                              Boolean(errors.imageUrl?.message)
+                                ? { borderColor: "#ED474A" }
+                                : { borderColor: "#0E6BA8" }
+                            }
+                            className="firstname-input"
+                            type="file"
+                            ref={inputFileRef}
+                            onChange={handleChangeFile}
+                            hidden
+                          />
+                          {Boolean(errors.imageUrl?.message) ? (
+                            <Form.Label style={{ color: "#EF393B" }}>
+                              {errors.imageUrl?.message}
+                            </Form.Label>
+                          ) : (
+                            ""
+                          )}
+                        </Col>
+                        {/* //////////////////////////////////////////// */}
+                        <Col className="col-12">
+                          <hr className="basic-hr" />
+                        </Col>
                       </Row>
                     </div>
                   </Card.Body>
+                  <div className="align-items-end d-flex justify-content-start card-footer-btn">
+                    <button
+                      disabled={!isValid}
+                      type="submit"
+                      className="btn btn-primary d-block  submit-btn"
+                    >
+                      Мәліметтерді сақтау
+                    </button>
+                  </div>
                 </Card>
               </Form>
             </Col>
