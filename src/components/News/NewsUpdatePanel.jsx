@@ -3,7 +3,6 @@ import {
   Container,
   Row,
   Col,
-  Button,
   Alert,
   Card,
   Form,
@@ -14,9 +13,7 @@ import { useForm } from "react-hook-form";
 
 import { selectIsAuth, fetchAuthMe } from "../../redux/slices/auth.js";
 import {
-  fetchCreateNews,
   fetchUpdateNews,
-  fetchGetOneNews,
   fetchGetAllNews,
 } from "../../redux/slices/news.js";
 
@@ -39,7 +36,7 @@ const NewsCUPanel = () => {
 
   React.useEffect(() => {
     dispatch(fetchGetAllNews());
-  }, []);
+  }, [dispatch]);
 
   news &&
     news.items &&
@@ -92,7 +89,7 @@ const NewsCUPanel = () => {
   });
 
   const onSubmit = async (values) => {
-    const data = id ? await dispatch(
+    const data = await dispatch(
       fetchUpdateNews({
         id: id,
         title: values.title,
@@ -100,13 +97,7 @@ const NewsCUPanel = () => {
         text: values.text,
         imageUrl: oneNews[0] && oneNews[0].imageUrl ? oneNews[0].imageUrl : `http://localhost:4444${newsImageUrl}`,
       })
-    ) : await dispatch(
-      fetchCreateNews({
-        title: values.title,
-        date: formatedDate && formatedDate,
-        text: values.text,
-        imageUrl: newsImageUrl && `http://localhost:4444${newsImageUrl}`,
-      }));
+    )
 
     dispatch(fetchAuthMe());
 
@@ -162,11 +153,8 @@ const NewsCUPanel = () => {
                 name: "Жаңалықтар панелі",
               },
               {
-                url:
-                  id && id
-                    ? `/news-crud-panel/update/${id && id}`
-                    : "/news-crud-panel/create",
-                name: id && id ? `${id && id}` : "Қосу",
+                url: `/news-crud-panel/update${id && '/' + id}`,
+                name: `${id && id}`
               },
             ]}
           />

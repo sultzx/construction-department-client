@@ -1,8 +1,8 @@
-import { Row, Col, Button, Card } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { fetchDeleteNews, fetchGetAllNews } from "../../redux/slices/news.js";
+import { fetchDeleteNews } from "../../redux/slices/news.js";
 
 import "./style.scss";
 import React from "react";
@@ -10,7 +10,6 @@ import React from "react";
 const TinyNews = ({ id, i, title, date, text, imageUrl, response}) => {
 
   const dispatch = useDispatch();
-
 
   const [formatedDate, setDate] = React.useState(new Date(date))
 
@@ -51,9 +50,7 @@ const TinyNews = ({ id, i, title, date, text, imageUrl, response}) => {
 
               <button
                 className="btn btn-primary delete-news-btn"
-                onClick={ onClickRemove
-                }
-              >
+                onClick={ onClickRemove }>
                 Өшіру
               </button>
             </Col>

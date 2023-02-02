@@ -1,8 +1,8 @@
 import React from 'react'
 import { Routes, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import { fetchAuthMe } from "./redux/slices/auth";
 import Header from './components/Header/Header.jsx'
 import Login from './pages/Login.jsx'
 import Registration from './pages/Registration.jsx';
@@ -11,7 +11,7 @@ import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
 import Newspaper from './pages/Newspaper.jsx';
 import NewsCRUDPanel from './components/News/NewsCRUDPanel.jsx';
-import NewsCUPanel from './components/News/NewsCUPanel';
+import NewsCUPanel from './components/News/NewsUpdatePanel';
 import NewsCreatePanel from './components/News/NewsCreatePanel.jsx';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
 
   React.useEffect(() => {
     dispatch(fetchAuthMe())
-  }, [])
+  }, [dispatch])
 
   return (
     <>

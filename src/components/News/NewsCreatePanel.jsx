@@ -3,19 +3,16 @@ import {
   Container,
   Row,
   Col,
-  Button,
   Alert,
   Card,
   Form,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { selectIsAuth, fetchAuthMe } from "../../redux/slices/auth.js";
 import {
   fetchCreateNews,
-  fetchUpdateNews,
   fetchGetAllNews,
 } from "../../redux/slices/news.js";
 
@@ -29,14 +26,11 @@ const NewsCreatePanel = () => {
 
   const isAuth = useSelector(selectIsAuth);
 
-  const { news } = useSelector((state) => state.news);
-
   const [newsImageUrl, setNewsImageUrl] = React.useState("");
 
   React.useEffect(() => {
     dispatch(fetchGetAllNews());
-  }, []);
-
+  }, [dispatch]);
 
   const [formatedDate, setDate] = React.useState('');
 
