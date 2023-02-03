@@ -89,13 +89,14 @@ const NewsCUPanel = () => {
   });
 
   const onSubmit = async (values) => {
+    
     const data = await dispatch(
       fetchUpdateNews({
         id: id,
         title: values.title,
         date: formatedDate && formatedDate,
         text: values.text,
-        imageUrl: oneNews[0] && oneNews[0].imageUrl ? oneNews[0].imageUrl : `http://localhost:4444${newsImageUrl}`,
+        imageUrl: oneNews[0] && oneNews[0].imageUrl && newsImageUrl && `http://localhost:4444${newsImageUrl}`,
       })
     )
 
