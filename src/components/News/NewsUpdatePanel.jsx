@@ -32,21 +32,22 @@ const NewsCUPanel = () => {
 
   const oneNews = [];
 
-  const [newsImageUrl, setNewsImageUrl] = React.useState("");
+  news &&
+  news.items &&
+  news.items.forEach((item, i) => {
+    if (item._id === id) {
+      oneNews.push(item);
+    }
+  });
+
+  const [newsImageUrl, setNewsImageUrl] = 
+    React.useState(oneNews && oneNews[0] && oneNews[0].img);
 
   React.useEffect(() => {
     dispatch(fetchGetAllNews());
   }, [dispatch]);
 
-  news &&
-    news.items &&
-    news.items.forEach((item, i) => {
-      if (item._id === id) {
-        oneNews.push(item);
-      }
-    });
-
-  const [formatedDate, setDate] = React.useState(
+  const [formatedDate, setDate] = React.useState( 
     oneNews[0] &&
       oneNews[0].date &&
       new Date(oneNews[0].date).toISOString().split("T")[0]
