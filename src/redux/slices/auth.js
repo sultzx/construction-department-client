@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from '../../axios.js'
 
-export const fetchAuth= createAsyncThunk('auth/fetchAuth', async (params, {rejectWithValue}) => {
+export const fetchAuthEntity= createAsyncThunk('auth/fetchAuthEntity', async (params, {rejectWithValue}) => {
     try {
-        const  response  = await axios.post('/api/auth/login', params)
+        const  response  = await axios.post('/api/auth/login/for-entity', params)
           return response.data  
       } catch (error) {
           if (!error.response) {
@@ -13,9 +13,35 @@ export const fetchAuth= createAsyncThunk('auth/fetchAuth', async (params, {rejec
       } 
 })
 
+export const fetchAuthIndividual= createAsyncThunk('auth/fetchAuthIndividual', async (params, {rejectWithValue}) => {
+    try {
+        const  response  = await axios.post('/api/auth/login/for-individual', params)
+          return response.data  
+      } catch (error) {
+          if (!error.response) {
+              throw error
+          }
+          return rejectWithValue(error.response.data)
+      } 
+})
+
+
 export const fetchRegister = createAsyncThunk('auth/fetchRegister', async (params, {rejectWithValue}) => {
     try {
-      const  response  = await axios.post('/api/auth/registration', params)
+      const  response  = await axios.post('/api/auth/registration/for-individual', params)
+        return response.data  
+    } catch (error) {
+        if (!error.response) {
+            throw error
+        }
+        return rejectWithValue(error.response.data)
+    }    
+})
+
+
+export const fetchEntityRegister = createAsyncThunk('auth/fetchEntityRegister', async (params, {rejectWithValue}) => {
+    try {
+      const  response  = await axios.post('/api/auth/registration/for-entity', params)
         return response.data  
     } catch (error) {
         if (!error.response) {
@@ -30,9 +56,21 @@ export const fetchAuthMe= createAsyncThunk('auth/fetchAuthMe', async () => {
     return data
 })
 
-export const fetchUpdateMe= createAsyncThunk('auth/fetchUpdateMe', async (params, {rejectWithValue}) => {
+export const fetchUpdateIndividual= createAsyncThunk('auth/fetchUpdateIndividual', async (params, {rejectWithValue}) => {
     try {
-        const  response  = await axios.patch('/api/auth/update-profile', params)
+        const  response  = await axios.patch('/api/auth/update-individual-profile', params)
+          return response.data  
+      } catch (error) {
+          if (!error.response) {
+              throw error
+          }
+          return rejectWithValue(error.response.data)
+      }    
+})
+
+export const fetchUpdateEntity= createAsyncThunk('auth/fetchUpdateEntity', async (params, {rejectWithValue}) => {
+    try {
+        const  response  = await axios.patch('/api/auth/update-entity-profile', params)
           return response.data  
       } catch (error) {
           if (!error.response) {
@@ -58,18 +96,34 @@ const authSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchAuth.pending]: (state) => {
+        [fetchAuthEntity.pending]: (state) => {
             state.status = 'loading'
             state.error = ''
         },
-        [fetchAuth.fulfilled]: (state, action) => {
+        [fetchAuthEntity.fulfilled]: (state, action) => {
             state.status = 'loaded'
             state.data = action.payload
         },
-        [fetchAuth.rejected]: (state, action) => {
+        [fetchAuthEntity.rejected]: (state, action) => {
             state.status = 'error'
             state.error = action.payload
         },
+
+
+        [fetchAuthIndividual.pending]: (state) => {
+            state.status = 'loading'
+            state.error = ''
+        },
+        [fetchAuthIndividual.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [fetchAuthIndividual.rejected]: (state, action) => {
+            state.status = 'error'
+            state.error = action.payload
+        },
+
+
 
         [fetchAuthMe.pending]: (state) => {
             state.status = 'loading'
@@ -99,15 +153,44 @@ const authSlice = createSlice({
             state.error = action.payload
         },
 
-        [fetchUpdateMe.pending]: (state) => {
+        [fetchUpdateIndividual.pending]: (state) => {
             state.status = 'loading'
             state.error = ''
         },
-        [fetchUpdateMe.fulfilled]: (state, action) => {
+        [fetchUpdateIndividual.fulfilled]: (state, action) => {
             state.status = 'loaded'
             state.data = action.payload
         },
-        [fetchUpdateMe.rejected]: (state, action) => {
+        [fetchUpdateIndividual.rejected]: (state, action) => {
+            state.status = 'error'
+            state.error = action.payload
+        },
+
+
+        [fetchEntityRegister.pending]: (state) => {
+            state.status = 'loading'
+            state.error = ''
+        },
+        [fetchEntityRegister.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+            
+        },
+        [fetchEntityRegister.rejected]: (state, action) => {
+            
+            state.status = 'error'
+            state.error = action.payload
+        },
+
+        [fetchUpdateEntity.pending]: (state) => {
+            state.status = 'loading'
+            state.error = ''
+        },
+        [fetchUpdateEntity.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [fetchUpdateEntity.rejected]: (state, action) => {
             state.status = 'error'
             state.error = action.payload
         }

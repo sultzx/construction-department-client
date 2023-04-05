@@ -12,9 +12,11 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectIsAuth, fetchUpdateMe, fetchAuthMe } from "../redux/slices/auth";
+import { selectIsAuth, fetchUpdateMe, fetchAuthMe, fetchUpdateIndividual, fetchUpdateEntity } from "../redux/slices/auth";
 import "../styles/index.scss";
 import "../styles/Profile.scss";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 import blueProfile from "../images/blue-profile.png";
 import BreadLinker from "../components/BreadLinker/BreadLinker.jsx";
@@ -27,7 +29,12 @@ import axios from "../axios.js";
 const Profile = () => {
   const isAuth = useSelector(selectIsAuth);
 
-  const userData = useSelector((state) => state.auth.data);
+  const {data} = useSelector((state) => state.auth);
+
+  const [phone, setPhone] = React.useState(data && data.phone && data.phone)
+
+
+  console.log(data && data)
 
   const dispatch = useDispatch();
 
@@ -35,12 +42,18 @@ const Profile = () => {
 
   const handleChangeFile = async (event) => {
     try {
+      let file = event.target.files[0]
       const formData = new FormData();
-      const file = event.target.files[0];
       formData.append("image", file);
       const { data } = await axios.post("/api/upload/avatar", formData);
       console.log(data.url);
-      console.log('asdasd');
+      // Array.from(event.target.files).forEach(async (fil, i)=> {
+      //   const formData = new FormData();
+      //   formData.append("image", fil);
+      //   const { data } = await axios.post("/api/upload/avatar", formData);
+      // console.log(data.url);
+      // })
+    
     } catch (error) {
       console.warn(error);
       alert("Uploading image error");
@@ -61,40 +74,62 @@ const Profile = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      lastname: userData && userData.lastname,
-      firstname: userData && userData.firstname,
-      patronymic: userData && userData.patronymic,
-      phone: userData && userData.phone,
-      address_region: userData && userData.address && userData.address.region,
-      address_city: userData && userData.address && userData.address.city,
-      address_street: userData && userData.address && userData.address.street,
-      address_home: userData && userData.address && userData.address.home,
+      lastname: data && data.lastname,
+      firstname: data && data.firstname,
+      patronymic: data && data.patronymic,
+      address_region: data && data.address && data.address.region,
+      address_city: data && data.address && data.address.city,
+      address_street: data && data.address && data.address.street,
+      address_home: data && data.address && data.address.home,
     },
     mode: "onChange",
   });
 
   const onSubmit = async (values) => {
-    const data = await dispatch(
-      fetchUpdateMe({
-        lastname: values.lastname,
-        firstname: values.firstname,
-        patronymic: values.patronymic,
-        phone: values.phone,
-        address: {
-          region: values.address_region,
-          city: values.address_city,
-          street: values.address_street,
-          home: values.address_home,
-        },
-      })
-    );
+
+    let fetch = ''
+
+    switch(data && data.role) {
+      case 'user':     
+      fetch = await dispatch(
+        fetchUpdateIndividual({
+          lastname: values.lastname,
+          firstname: values.firstname,
+          patronymic: values.patronymic,
+          phone: phone && phone,
+          address: {
+            region: values.address_region,
+            city: values.address_city,
+            street: values.address_street,
+            home: values.address_home,
+          },
+        })
+      );
+      break;
+      case 'company': 
+      fetch = await dispatch(
+        fetchUpdateEntity({
+          name: values.name,
+          phone: phone && phone,
+          address: {
+            region: values.address_region,
+            city: values.address_city,
+            street: values.address_street,
+            home: values.address_home,
+          },
+        })
+      );
+      break;
+    }
+   
+
 
     dispatch(fetchAuthMe());
 
-    setResponseMessage(data.payload.message);
+    setResponseMessage(fetch.payload.message);
 
-    if ("token" in data.payload) {
-      window.localStorage.setItem("token", data.payload.token);
+    if ("token" in fetch.payload) {
+      window.localStorage.setItem("token", fetch.payload.token);
     }
   };
 
@@ -145,9 +180,9 @@ const Profile = () => {
             <Col lg={4} md={6} sm={6} xs={12}>
               <Card
                 className={`profile-page-card 
-              ${userData && userData.role === "user" && "for-user"} 
-              ${userData && userData.role === "moderator" && "for-moderator"}  
-              ${userData && userData.role === "admin" && "for-admin"}
+              ${data && data.role === "user" && "for-user"} 
+              ${data && data.role === "moderator" && "for-moderator"}  
+              ${data && data.role === "admin" && "for-admin"}
               `}
               >
                 <Card.Body>
@@ -157,13 +192,13 @@ const Profile = () => {
                         onClick={() =>
                           document.onload(
                             `http://localhost:4444${
-                              userData && userData.avatarUrl
+                              data && data.avatarUrl
                             }`
                           )
                         }
                         src={
-                          userData && userData.avatarUrl
-                            ? `http://localhost:4444${userData.avatarUrl}`
+                          data && data.avatarUrl
+                            ? `http://localhost:4444${data.avatarUrl}`
                             : blueProfile
                         }
                       />
@@ -174,9 +209,9 @@ const Profile = () => {
                         color: "black",
                       }}
                     >
-                      {userData && userData.lastname ? userData.lastname : ""}{" "}
-                      {userData && userData.firstname
-                        ? userData.firstname
+                      {data && data.lastname ? data.lastname : ""}{" "}
+                      {data && data.firstname
+                        ? data.firstname
                         : " "}{" "}
                     </Card.Title> */}
                   </div>
@@ -204,6 +239,7 @@ const Profile = () => {
                   <input
                     type="file"
                     ref={inputFileRef}
+                    multiple
                     onChange={handleChangeFile}
                     hidden
                   />
@@ -220,7 +256,9 @@ const Profile = () => {
                     <div className="d-flex flex-column justify-content-center">
                       <Row>
                         {/* //////////////////////////////////// */}
-                        <Col xs={12} sm={12} md={4} lg={4}>
+                        {
+                          data && data.role == 'user' && <>
+                          <Col xs={12} sm={12} md={4} lg={4}>
                           <Form.Label>Фамилияңыз</Form.Label>
                           <Form.Control
                             style={
@@ -230,7 +268,7 @@ const Profile = () => {
                             }
                             className="firstname-input"
                             type="text"
-                            placeholder={userData && userData.lastname}
+                            placeholder={data && data.lastname}
                             {...register("lastname", {
                               required: "Фамилияңызды енгізіңіз",
                               minLength: {
@@ -277,7 +315,7 @@ const Profile = () => {
                                   "Атыңыз 2 және 30 символ арасында болуы керек",
                               },
                             })}
-                            placeholder={userData && userData.firstname}
+                            placeholder={data && data.firstname}
                           />
                           {Boolean(errors.firstname?.message) ? (
                             <Form.Label style={{ color: "#EF393B" }}>
@@ -297,7 +335,7 @@ const Profile = () => {
                                 : { borderColor: "#0E6BA8" }
                             }
                             className=" firstname-input"
-                            placeholder={userData && userData.patronymic}
+                            placeholder={data && data.patronymic}
                             type="text"
                             {...register("patronymic")}
                           />
@@ -309,6 +347,47 @@ const Profile = () => {
                             ""
                           )}
                         </Col>
+                          
+                          </>
+                        }
+                        
+                        {
+                          data && data.role == 'company' && 
+                          <Col xs={12} sm={12} md={4} lg={4}>
+                          <Form.Label>Компания атауы</Form.Label>
+                          <Form.Control
+                            style={
+                              Boolean(errors.name?.message)
+                                ? { borderColor: "#ED474A" }
+                                : { borderColor: "#0E6BA8" }
+                            }
+                            className="firstname-input"
+                            type="text"
+                            placeholder={data && data.name}
+                            {...register("name", {
+                              required: "Компания атауын енгізіңіз",
+                              minLength: {
+                                value: 2,
+                                message:
+                                  "Компания атауы 2 және 30 символ арасында болуы керек",
+                              },
+                              maxLength: {
+                                value: 30,
+                                message:
+                                  "Компания атауы 2 және 30 символ арасында болуы керек",
+                              },
+                            })}
+                          />
+                          {Boolean(errors.name?.message) ? (
+                            <Form.Label style={{ color: "#EF393B" }}>
+                              {errors.name?.message}
+                            </Form.Label> 
+                          ) : (
+                            ""
+                          )}
+                        </Col>
+                        }
+
                         {/* //////////////////////////////////////////// */}
                         <Col className="col-12">
                           <hr className="basic-hr" />
@@ -318,31 +397,14 @@ const Profile = () => {
                         {/* //////////////////////////////////////////// */}
                         <Col xs={12} sm={12} md={4} lg={4}>
                           <Form.Label>Телефон</Form.Label>
-                          <Form.Control
-                            style={
-                              Boolean(errors.phone?.message)
-                                ? { borderColor: "#ED474A" }
-                                : { borderColor: "#0E6BA8" }
-                            }
-                            className=" firstname-input"
-                            type="phone"
-                            placeholder={userData && userData.phone}
-                            {...register("phone", {
-                              required: "Телефон нөміріңізді енгізіңіз",
-                              maxLength: {
-                                value: 11,
-                                message:
-                                  "Телефон нөміріңіз 11 саннан кем болмауы керек",
-                              },
-                            })}
-                          />
-                          {Boolean(errors.phone?.message) ? (
-                            <Form.Label style={{ color: "#EF393B" }}>
-                              {errors.phone?.message}
-                            </Form.Label>
-                          ) : (
-                            ""
-                          )}
+                      <PhoneInput
+   
+                        className="form-control phone"
+                        defaultCountry="KZ"
+                        value={data && data.phone ? data.phone : phone}
+                        onChange={setPhone}
+                      />
+                  
                         </Col>
 
                         {/* //////////////////////////////////////////// */}
@@ -362,9 +424,9 @@ const Profile = () => {
                             }
                             className=" firstname-input"
                             placeholder={
-                              userData &&
-                              userData.address &&
-                              userData.address.region
+                              data &&
+                              data.address &&
+                              data.address.region
                             }
                             type="text"
                             {...register("address_region", {
@@ -391,9 +453,9 @@ const Profile = () => {
                             className=" firstname-input"
                             type="text"
                             placeholder={
-                              userData &&
-                              userData.address &&
-                              userData.address.city
+                              data &&
+                              data.address &&
+                              data.address.city
                             }
                             {...register("address_city", {
                               required: "Қала атын енгізіңіз",
@@ -419,9 +481,9 @@ const Profile = () => {
                             className="firstname-input"
                             type="text"
                             placeholder={
-                              userData &&
-                              userData.address &&
-                              userData.address.street
+                              data &&
+                              data.address &&
+                              data.address.street
                             }
                             {...register("address_street", {
                               required: "Көше атын енгізіңіз",
@@ -446,9 +508,9 @@ const Profile = () => {
                             }
                             className="firstname-input"
                             placeholder={
-                              userData &&
-                              userData.address &&
-                              userData.address.home
+                              data &&
+                              data.address &&
+                              data.address.home
                             }
                             type="text"
                             {...register("address_home", {
@@ -485,7 +547,7 @@ const Profile = () => {
             <Col className="col-12">
               <hr className="basic-hr" />
             </Col>
-            {userData && userData.role === "user" && (
+            {data && data.role === "admin" && (
               <>
                 <Col lg={4} md={4} sm={6} xs={12}>
                   <Card className="news-panel-card">
@@ -585,6 +647,42 @@ const Profile = () => {
                 </Col>
               </>
             )}
+            {
+              data && data.category == 'contractor' && <>
+              <Col lg={4} md={4} sm={6} xs={12}>
+                  <Card className="services-panel-card">
+                    <Card.Body>
+                      <Card.Title>Жобалар</Card.Title>
+                      <div className="text-center">
+                        <Card.Img
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            marginTop: "12px",
+                            marginBottom: "12px",
+                          }}
+                          src={project_management}
+                        />
+                      </div>
+                      <Card.Text>
+                        Бұл панелде мердігерлік қызмет көрсетуші компания жаңа жобаларды құрып, өңдей немесе өшіре алады
+                      </Card.Text>
+                      <Link
+                        to="/project-crud-panel"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <button className="btn btn-primary d-block link-to-news-crud-btn">
+                          Панелге көшу
+                        </button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col className="col-12">
+                  <hr className="basic-panels-hr" />
+                </Col>
+              </>
+            }
           </Row>
           <br />
         </Container>

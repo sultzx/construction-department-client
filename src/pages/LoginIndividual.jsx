@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 
-import { fetchAuth, selectIsAuth } from "../redux/slices/auth.js";
+import { fetchAuth, fetchAuthIndividual, selectIsAuth } from "../redux/slices/auth.js";
 import "../styles/Login.scss";
 import flag from "../images/flag.png";
 
-const Login = () => {
+const LoginIndividual = () => {
 
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
 
-    const data = await dispatch(fetchAuth(values));
+    const data = await dispatch(fetchAuthIndividual(values));
 
     setErrorMessage(data.payload.message)
 
@@ -82,6 +82,7 @@ const Login = () => {
                     <Form onSubmit={handleSubmit(onSubmit)} method="post">
 
                       <Form.Group className="mb-3 ">
+                      <Form.Label >Жеке тұлға үшін</Form.Label>
                         {Boolean(errors.email?.message) ?
                         <Form.Label style={{color: 'red'}}>{errors.email?.message}</Form.Label> : ''}
                         <Form.Control 
@@ -112,7 +113,7 @@ const Login = () => {
                           Кіру
                         </button>
                       </div>
-                      <p className="text-muted">Құпия сөзді ұмыттыңыз ба?</p>
+                      <p className="text-muted">Жүйеде жоқсыз ба? <a href="/login">Тіркелу</a></p>
                     </Form>
                     {/* LOGIN FROM END */}
                   </Card.Body>
@@ -126,4 +127,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginIndividual;
