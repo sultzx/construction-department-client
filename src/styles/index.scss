@@ -55,3 +55,23 @@ code {
   border: 1px solid #267DB5;
   border-radius: 1px;
 }
+
+.suggestions {
+  
+  li {
+    border: 1px solid #0C488D;
+    border-top: none;
+    cursor: pointer;
+    padding: 6px;
+    list-style-type: none;
+  }
+}
+
+.category-card.focused  {
+  border: 1px solid #0C488D
+}
+
+.category-card:hover {
+  border: 1px solid #0C488D;
+  cursor: pointer;
+}

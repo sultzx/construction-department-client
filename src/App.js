@@ -1,6 +1,7 @@
 import React from 'react'
 import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import {  useJsApiLoader } from '@react-google-maps/api';
 
 import { fetchAuthMe } from "./redux/slices/auth";
 import Header from './components/Header/Header.jsx'
@@ -20,7 +21,9 @@ import LoginEntity from './pages/LoginEntity';
 import LoginIndividual from './pages/LoginIndividual';
 import ProjectCRUDPanel from './components/Project/ProjectCRUDPanel.jsx';
 import ProjectCreatePanel from './components/Project/ProjectCreatePanel.jsx';
-
+import MonitoringCRUDPanel from './components/Monitoring/MonitoringCRUDPanel.jsx'
+import FullProject from './components/Monitoring/FullProject.jsx';
+import FullMonitoring from './components/Monitoring/FullMonitoring';
 function App() {
 
   const dispatch = useDispatch()
@@ -28,6 +31,14 @@ function App() {
   React.useEffect(() => {
     dispatch(fetchAuthMe())
   }, [dispatch])
+
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    language: 'kk-KZ',
+    libraries: ['places']
+  })
 
   return (
     <>
@@ -42,14 +53,19 @@ function App() {
         <Route path='/main' element={<Main/>}/>
         <Route path='/news' element={<Newspaper/>}/>
         <Route path='/contact' element={<Contact/>}/>
-        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/profile' element={<Profile isLoaded={isLoaded}/>}/>
         <Route path='/news-crud-panel' element={<NewsCRUDPanel/>}/>
         <Route path='/news-crud-panel/create' element={<NewsCreatePanel/>}/>
         <Route path='/news-crud-panel/update/:id' element={<NewsCUPanel/>}/>
 
-        <Route path='/project-crud-panel' element={<ProjectCRUDPanel/>}/>
-        <Route path='/project-crud-panel/create' element={<ProjectCreatePanel/>}/>
+        <Route path='/project-crud-panel' element={<ProjectCRUDPanel isLoaded={isLoaded}/>}/>
+        <Route path='/project-crud-panel/create' element={<ProjectCreatePanel isLoaded={isLoaded}/>}/>
         {/* <Route path='/project-crud-panel/update/:id' element={<ProjectCUPanel/>}/> */}
+
+        <Route path='/monitoring-crud-panel' element={<MonitoringCRUDPanel isLoaded={isLoaded}/>}/>
+
+        <Route path='/monitoring-crud-panel/:id' element={<FullProject isLoaded={isLoaded}/>}/>
+        <Route path='/monitoring-crud-panel/:id/monitoring/:m_id' element={<FullMonitoring isLoaded={isLoaded}/>}/>
       </Routes>
     </>
   );
