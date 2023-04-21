@@ -52,24 +52,24 @@ const FullMonitoring = ({ isLoaded }) => {
 
     const handleChooseImages = async (event) => {
         try {
-          Array.from(event.target.files).forEach(async (fil, i)=> {
-            const formData = new FormData();
-            formData.append("image", fil);
-            const { data } = await axios.post(`/api/upload/monitoring/${m_id}`, formData);
-          console.log(data.url);
-          })
+            Array.from(event.target.files).forEach(async (fil, i) => {
+                const formData = new FormData();
+                formData.append("image", fil);
+                const { data } = await axios.post(`/api/upload/monitoring/${m_id}`, formData);
+                console.log(data.url);
+            })
 
-        await dispatch(fetchAuthMe());
-        window.location.reload()
+            await dispatch(fetchAuthMe());
+            window.location.reload()
         } catch (error) {
-          console.warn(error);
-          alert("Мониторинг фото-есептерін көшіру кезінде қате шықты");
+            console.warn(error);
+            alert("Мониторинг фото-есептерін көшіру кезінде қате шықты");
         }
-        
-        
-      };
 
-///////////////////////////////////////
+
+    };
+
+    ///////////////////////////////////////
 
 
     const createMonitoring = async () => {
@@ -85,7 +85,17 @@ const FullMonitoring = ({ isLoaded }) => {
         } else {
             alert('Уақытты таңлаңыз')
         }
+    }
 
+    const setMonitoringStatus = async (status) => {
+        try {
+            await axios.patch(`/api/monitoring/${m_id}/set-status`, {
+                status
+            });
+            window.location.assign(`http://localhost:3000/monitoring-crud-panel/${id}`)
+        } catch (error) {
+            alert('Құжатты тексеру кезінде қате шықты')
+        }
     }
 
     console.log('data', data && data)
@@ -137,11 +147,11 @@ const FullMonitoring = ({ isLoaded }) => {
                         },
                         {
                             url: "/monitoring-crud-panel/" + id,
-                            name: id,
+                            name: sortedMonitoring[0]?.project?.title,
                         },
                         {
                             url: "/monitoring-crud-panel/" + id + '/monitoring/' + m_id,
-                            name: m_id,
+                            name: `Мониторинг актісі - ${m_id.substring(0, 5)}`,
                         },
                     ]}
                 />
@@ -215,7 +225,7 @@ const FullMonitoring = ({ isLoaded }) => {
                                             </Col>
                                             <Col className="col-12 d-flex row align-items-start">
                                                 <Col className="col-12" style={{ padding: '40px 40px 12px 80px' }}>
-                                                    <h4 className="text-center" style={{ fontFamily: 'Times New Roman', fontWeight: '600' }}>Мониторинг актісі</h4>
+                                                    <h4 className="text-center" style={{ fontFamily: 'Times New Roman', fontWeight: '600' }}>Мониторинг актісі - {m_id.substring(0, 5)}</h4>
                                                     <br />
                                                     <p style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ағымдағы мониторинг актісі бойынша талап етуші жергілікті мекеме "{sortedMonitoring[0]?.demander?.name}" жәнеде
                                                         осы құжатты тексеруші {sortedMonitoring[0]?.demander?.director?.lastname} {sortedMonitoring[0]?.demander?.director?.firstname} {sortedMonitoring[0]?.demander?.director?.patronymic} мырзаға таңдалып отырған жобаның {sortedMonitoring[0]?.project?.coordinates?.lat}' - {sortedMonitoring[0]?.project?.coordinates?.lng}'
@@ -226,15 +236,15 @@ const FullMonitoring = ({ isLoaded }) => {
                                                     <Row>
                                                         {
                                                             sortedMonitoring[0]?.images?.map((image, i) => (
-                                                                <Col className="col-3" key={i} style={{margin: '3px 0'}}>
-                                                                    <img src={`http://localhost:4444${image}`} 
-                                                                    onClick={() => {window.location.assign(`http://localhost:4444${image}`)}}
-                                                                    className="monitoring-img" 
-                                                                    style={{height: '103px', width: '203px', border: '1px solid #0D60A0'}} alt="" />
+                                                                <Col className="col-3" key={i} style={{ margin: '3px 0' }}>
+                                                                    <img src={`http://localhost:4444${image}`}
+                                                                        onClick={() => { window.location.assign(`http://localhost:4444${image}`) }}
+                                                                        className="monitoring-img"
+                                                                        style={{ height: '103px', width: '203px', border: '1px solid #0D60A0' }} alt="" />
                                                                 </Col>
                                                             ))
                                                         }
-                                                </Row>
+                                                    </Row>
                                                 </Col>
                                             </Col>
                                             <Col className="col-12 d-flex align-items-end">
@@ -279,22 +289,59 @@ const FullMonitoring = ({ isLoaded }) => {
                 <Row>
                     {
                         data?.category == 'contractor' && <>
-
                             <Col className="col-md-auto d-flex column" style={{ marginTop: '4px' }}>
                                 <button className="btn btn-primary create-news-btn flex-fill" onClick={() => { imagesRef.current.click() }}>
                                     Құжатқа фото-есептерді қосу
                                 </button>
-                                <input type="file" hidden multiple ref={imagesRef} onChange={handleChooseImages}  />
+                                <input type="file" hidden multiple ref={imagesRef} onChange={handleChooseImages} />
                             </Col>
                         </>
                     }
                     {
                         data?.category == 'governance' && <>
 
+                            {
+                                sortedMonitoring[0]?.status == 'passed' &&
+                                <Col className="col-12 d-flex column" style={{ marginTop: '4px' }}>
+                                   Уақыт:  {  sortedMonitoring[0]?.updatedAt && new Date(sortedMonitoring[0]?.updatedAt).toLocaleDateString('kk-KZ', DateOptions)}
+                                </Col>
+
+                            }
                             <Col className="col-md-auto d-flex column" style={{ marginTop: '4px' }}>
-                                <button className="btn btn-primary create-news-btn flex-fill" onClick={() => { createMonitoring() }}>
-                                    Жаңа мониторинг актісін құру
+
+                                <button
+                                    disabled={
+                                        sortedMonitoring[0]?.status == 'passed'
+                                    }
+                                    className="btn btn-primary create-news-btn flex-fill" onClick={() => { setMonitoringStatus('passed') }}>
+                                    {
+                                        sortedMonitoring[0]?.status == 'passed' ? 'Құжат қабылданды' : sortedMonitoring[0]?.status == 'checking' ? 'Құжатты қабылдау' : sortedMonitoring[0]?.status == 'unapproved' && 'Құжатты қабылдау'
+                                    }
                                 </button>
+                            </Col>
+
+                            <Col className="col-md-auto d-flex column" style={{ marginTop: '4px' }}>
+                                {
+                                    sortedMonitoring[0]?.status == 'checking' ? 
+                                    <button
+                                        className="btn btn-primary delete-news-btn flex-fill"
+                                        style={{
+                                            margin: '0'
+                                        }}
+                                        onClick={() => { setMonitoringStatus('unapproved') }}>
+                                        Құжатты жөндеуге жіберу
+                                    </button> :
+                                    
+                                    sortedMonitoring[0]?.status == 'unapproved' &&
+                                    <button
+                                        className="btn btn-primary delete-news-btn flex-fill"
+                                        style={{
+                                            margin: '0'
+                                        }}
+                                        onClick={() => { setMonitoringStatus('unapproved') }}>
+                                        Құжатты жөндеуге жіберу
+                                    </button>
+                                }
                             </Col>
                         </>
                     }

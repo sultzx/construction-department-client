@@ -98,6 +98,18 @@ const FullProject = ({ isLoaded }) => {
 
     var DateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
+    console.log(monitoring?.items)
+
+    const sortedMonitoring = []
+
+    monitoring?.items?.forEach((moni, i) => {
+        if (moni?.project?._id == sortedProject[0]._id) {
+            sortedMonitoring.push(moni)
+        }
+    })
+
+    console.log(sortedMonitoring && sortedMonitoring)
+
     return (<>
         <section>
             {!isAuth ? (
@@ -216,9 +228,9 @@ const FullProject = ({ isLoaded }) => {
                             m?.project?._id == id &&
                             <Col md={4} key={i} style={{margin: '12px 0'}}>
                                 <Card style={{
-                                    border: `1px solid ${m?.status == 'checking' ? 'orange' : 'blue'}`,
+                                    border: `1px solid ${m?.status == 'checking' ? 'orange' : m?.status == 'passed' ? 'green' : m?.status == 'unapproved' && '#900000'}`,
                                     borderRadius: '1px',
-                                    borderLeft: `6px solid ${m?.status == 'checking' ? 'orange' : 'blue'}`
+                                    borderLeft: `6px solid ${m?.status == 'checking' ? 'orange' : m?.status == 'passed' ? 'green' : m?.status == 'unapproved' && '#900000'}`
                                 }}>
                                     <Card.Body>
                                         <p style={{ margin: '0' }}>Талап етуші: {m?.demander?.director?.lastname} {m?.demander?.director?.firstname}  {m?.demander?.director?.patronymic}</p>
@@ -229,20 +241,26 @@ const FullProject = ({ isLoaded }) => {
                                         <p style={{ margin: '0' }}>Тапсырушы: {m?.submitter?.director?.lastname} {m?.submitter?.director?.firstname}  {m?.submitter?.director?.patronymic}</p>
                                         <p style={{ margin: '0' }}>Мекеме: {m?.submitter?.name}</p>
                                         <hr />
-                                        <span>Статусы: {m?.status == 'checking' && 'Күтілуде'}</span>
+                                        <span>Статусы: {m?.status == 'checking' ? 'Күтілуде' : m?.status == 'passed' ? 'Қабылданды' : m?.status == 'unapproved' && 'Өзгертуге жіберілді'}</span>
                                         <hr />
                                         <div className="text-end">
                                             {
                                                 data?.category == 'contractor' && 
-                                                <button  className="btn btn-primary update-news-btn" onClick={() => { window.location.assign(`http://localhost:3000/monitoring-crud-panel/${id}/monitoring/${m?._id}`) }}>
-                                                Құжатты толтыру
+                                                <button  className={`btn btn-primary ${m?.status == 'checking' ? 'update' : m?.status == 'passed' ? 'create' : m?.status == 'unapproved' && 'delete'}-news-btn`} onClick={() => { window.location.assign(`http://localhost:3000/monitoring-crud-panel/${id}/monitoring/${m?._id}`) }}>
+                                               { 
+                                                    m?.status == 'checking' || m?.status == 'unapproved' ? 'Құжатты толтыру' : m?.status == 'passed' && 'Толығырақ'
+                                                  }
+                                                
                                             </button>
                                             }
                                             
                                             {
                                                 data?.category == 'governance' && 
-                                                <button  className="btn btn-primary update-news-btn" onClick={() => {  }}>
-                                                   Құжатты Тексеру
+                                                <button  className={`btn btn-primary ${m?.status == 'checking' ? 'update' : m?.status == 'passed' ? 'create' : m?.status == 'unapproved' && 'delete'}-news-btn`} onClick={() => { window.location.assign(`http://localhost:3000/monitoring-crud-panel/${id}/monitoring/${m?._id}`)  }}>
+                                                  { 
+                                                    m?.status == 'checking' || m?.status == 'unapproved' ? 'Құжатты тексеру' : m?.status == 'passed' && 'Толығырақ'
+                                                  }
+                                                   
                                             </button>
                                             }
                                         </div>
@@ -251,6 +269,9 @@ const FullProject = ({ isLoaded }) => {
                                 </Card>
                             </Col>
                         ))
+                    }
+                    {
+                        sortedMonitoring && sortedMonitoring.length < 1 && <h6>Әзірге мониторинг актілері жоқ</h6>
                     }
                 </Row>
                 <hr className="basic-hr" />
