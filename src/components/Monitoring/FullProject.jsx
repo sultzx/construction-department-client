@@ -103,7 +103,7 @@ const FullProject = ({ isLoaded }) => {
     const sortedMonitoring = []
 
     monitoring?.items?.forEach((moni, i) => {
-        if (moni?.project?._id == sortedProject[0]._id) {
+        if (moni?.project?._id == sortedProject[0]?._id) {
             sortedMonitoring.push(moni)
         }
     })

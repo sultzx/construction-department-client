@@ -178,8 +178,8 @@ const FullMonitoring = ({ isLoaded }) => {
                                 <br />
                                 <Row>
                                     <Col></Col>
-                                    <Col md={9} style={{ background: 'white', height: '1200px' }}>
-                                        <Row className="d-flex row" style={{ height: '1200px' }}>
+                                    <Col md={9} style={{ background: 'white', height: '1300px' }}>
+                                        <Row className="d-flex row" style={{ height: '1300px' }}>
                                             <Col className="col-12" style={{ height: '260px' }}>
                                                 <br />
                                                 <br />
@@ -225,7 +225,7 @@ const FullMonitoring = ({ isLoaded }) => {
                                             </Col>
                                             <Col className="col-12 d-flex row align-items-start">
                                                 <Col className="col-12" style={{ padding: '40px 40px 12px 80px' }}>
-                                                    <h4 className="text-center" style={{ fontFamily: 'Times New Roman', fontWeight: '600' }}>Мониторинг актісі - {m_id.substring(0, 5)}</h4>
+                                                    <h4 className="text-center" style={{ fontFamily: 'Times New Roman', fontWeight: '600' }}>Мониторинг актісі - {m_id.substring(5, 10).toUpperCase()}</h4>
                                                     <br />
                                                     <p style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ағымдағы мониторинг актісі бойынша талап етуші жергілікті мекеме "{sortedMonitoring[0]?.demander?.name}" жәнеде
                                                         осы құжатты тексеруші {sortedMonitoring[0]?.demander?.director?.lastname} {sortedMonitoring[0]?.demander?.director?.firstname} {sortedMonitoring[0]?.demander?.director?.patronymic} мырзаға таңдалып отырған жобаның {sortedMonitoring[0]?.project?.coordinates?.lat}' - {sortedMonitoring[0]?.project?.coordinates?.lng}'
