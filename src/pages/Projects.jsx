@@ -6,21 +6,24 @@ import { fetchAuth, selectIsAuth } from "../redux/slices/auth.js";
 
 import "../styles/Newspaper.scss"
 import News from "../components/News/ShortNews.jsx";
-import { fetchGetAllNews } from "../redux/slices/news.js";
-import React from "react";
 
-const Newspaper = () => {
+import React from "react";
+import { fetchGetAllProjects } from "../redux/slices/project.js";
+import ShortProject from "../components/Project/ShortProject.jsx";
+
+const Projects = ({isLoaded}) => {
   const isAuth = useSelector(selectIsAuth);
 
   const dispatch = useDispatch()
 
-  const newspaper = useSelector(state => state.news)
+  const project = useSelector(state => state.project)
 
   React.useEffect(() => {
-    dispatch(fetchGetAllNews())
+    dispatch(fetchGetAllProjects())
   }, [])
 
-console.log(newspaper && newspaper)
+  console.log(project?.project?.items)
+
   return (
     <>
       <Alert
@@ -54,21 +57,26 @@ console.log(newspaper && newspaper)
             className="breadcrumb-component-item"
             style={{ color: "#267DB5" }}
           >
-            Жаңалықтар
+            Жобалар
           </Breadcrumb.Item>
         </Breadcrumb>
         <hr className="basic-hr" />
         <Row>
-          
-          {newspaper && newspaper?.news?.items?.map((item, i) => (
-            <Col style={{marginTop: '24px'}} key={i} lg={3} md={4} sm={6} xs={12}>
-              <News title={item?.title} date={item?.date} text={item?.text} img={item?.imageUrl} />
+
+          {project && project?.project?.items?.map((item, i) => (
+            <Col style={{marginTop: '24px'}} key={i}  md={4} sm={6} xs={12}>
+              <ShortProject title={item?.title} begin={item?.begin} end={item?.end} text={item?.text} 
+              category={item?.category} 
+              coordinates={item?.coordinates}
+              isLoaded={isLoaded}
+              />
             </Col>
           ))}
+
         </Row>
       </Container>
     </>
   );
 };
 
-export default Newspaper;
+export default Projects;

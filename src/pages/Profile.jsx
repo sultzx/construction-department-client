@@ -551,7 +551,7 @@ console.log(center && center)
             <Col className="col-12">
               <hr className="basic-hr" />
             </Col>
-            {data && data.role === "admin" && (
+            {data && data.isAdmin === "true" && (
               <>
                 <Col lg={4} md={4} sm={6} xs={12}>
                   <Card className="news-panel-card">
@@ -584,10 +584,11 @@ console.log(center && center)
                     </Card.Body>
                   </Card>
                 </Col>
+
                 <Col lg={4} md={4} sm={6} xs={12}>
                   <Card className="services-panel-card">
                     <Card.Body>
-                      <Card.Title>Сервистер</Card.Title>
+                      <Card.Title>Конкурс</Card.Title>
                       <div className="text-center">
                         <Card.Img
                           style={{
@@ -599,9 +600,7 @@ console.log(center && center)
                         />
                       </div>
                       <Card.Text>
-                        Бұл панелде модератор мәртебесіне ие қолданушы сайт
-                        ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру
-                        мүмкіндігін қолдана алады.
+                        Бұл панелде жергілікті билік, яғни Шет ауданының құрылыс бөлімі белгілі бір нысан немесе жоба бойынша конкурс жариялай алады.
                       </Card.Text>
                       <Link
                         to="/news-crud-panel"
@@ -614,10 +613,11 @@ console.log(center && center)
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col lg={4} md={4} sm={6} xs={12}>
+
+                <Col lg={4} md={3} sm={6} xs={12}>
                   <Card className="services-panel-card">
                     <Card.Body>
-                      <Card.Title>Жобалар</Card.Title>
+                      <Card.Title>Мониторинг</Card.Title>
                       <div className="text-center">
                         <Card.Img
                           style={{
@@ -626,7 +626,7 @@ console.log(center && center)
                             marginTop: "12px",
                             marginBottom: "12px",
                           }}
-                          src={project_management}
+                          src={clipboard}
                         />
                       </div>
                       <Card.Text>
@@ -635,7 +635,7 @@ console.log(center && center)
                         мүмкіндігін қолдана алады.
                       </Card.Text>
                       <Link
-                        to="/news-crud-panel"
+                        to="/monitoring-crud-panel"
                         style={{ textDecoration: "none" }}
                       >
                         <button className="btn btn-primary d-block link-to-news-crud-btn">
@@ -681,44 +681,8 @@ console.log(center && center)
                     </Card.Body>
                   </Card>
                 </Col>
-                
-                
               </>
             }
-            <Col lg={4} md={4} sm={6} xs={12}>
-                  <Card className="services-panel-card">
-                    <Card.Body>
-                      <Card.Title>Мониторинг</Card.Title>
-                      <div className="text-center">
-                        <Card.Img
-                          style={{
-                            width: "90px",
-                            height: "90px",
-                            marginTop: "12px",
-                            marginBottom: "12px",
-                          }}
-                          src={clipboard}
-                        />
-                      </div>
-                      <Card.Text>
-                        Бұл панелде модератор мәртебесіне ие қолданушы сайт
-                        ішіндегі жаңалықтарды қосу, оқу, жаңарту, өшіру
-                        мүмкіндігін қолдана алады.
-                      </Card.Text>
-                      <Link
-                        to="/monitoring-crud-panel"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <button className="btn btn-primary d-block link-to-news-crud-btn">
-                          Панелге көшу
-                        </button>
-                      </Link>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col className="col-12">
-                  <hr className="basic-panels-hr" />
-                </Col>
           </Row>
           <br />
         </Container>

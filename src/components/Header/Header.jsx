@@ -31,7 +31,7 @@ const Header = () => {
                   width="36px"
                   style={{ opacity: "0.8", marginRight: "8px" }}
                 />
-                Қарағанды облысының әкімдігі
+                Шет ауданының құрылыс бөлімі ММ
               </Navbar.Brand>
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -41,9 +41,9 @@ const Header = () => {
                 {/* <Link to={"/main"}>
                   <a className="btn btn-outline-light header-link">Басты бет</a>
                 </Link> */}
-                <Link to={"/construction-department"}>
+                <Link to={"/contest"}>
                   <a className="btn btn-outline-light header-link">
-                    Құрылыс
+                  Конкурс
                   </a>
                 </Link>
                 <Link to={"/projects"}>
@@ -67,7 +67,7 @@ const Header = () => {
                         marginLeft: '8px'
                       }}
                       active
-                      title={`Қош келдіңіз, ${userData.firstname} ${userData.lastname ? userData.lastname : ''}`}
+                      title={`Қош келдіңіз, ${userData?.director?.lastname} ${userData?.director?.firstname}`}
                     >
                       <NavDropdown.Item >
                         <Link to={"/profile"}>

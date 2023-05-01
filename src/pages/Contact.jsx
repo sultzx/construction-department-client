@@ -4,10 +4,29 @@ import { Link } from "react-router-dom";
 
 import { fetchAuth, selectIsAuth } from "../redux/slices/auth.js";
 import "../styles/index.scss";
+import React from "react";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
-const Contact = () => {
+import flag_icon from '../images/flag-icon.png'
+
+const Contact = ({isLoaded}) => {
+
   const isAuth = useSelector(selectIsAuth);
 
+  const [map, setMap] = React.useState(null)
+
+  const {data} = useSelector(state => state.auth)
+
+  const containerStyle = {
+    width: 'auto',
+    height: '400px'
+};
+
+const onUnmount = React.useCallback(function callback(map) {
+  setMap(null)
+}, [])
+
+console.log(data && data)
   return (
     <>
       <Alert
@@ -46,8 +65,34 @@ const Contact = () => {
         </Breadcrumb>
         <hr className="basic-hr" />
         <Row>
-          <Col lg={4} md={4} sm={6} xs={12}></Col>
-          <Col lg={8} md={8} sm={6} xs={12}></Col>
+          <Col  md={6} className="d-flex row align-items-top justify-content-start">
+            <h5>Шет ауданының құрылыс бөлімі ММ</h5>
+            <p>Телефон: {data?.phone}</p>
+            <p>Пошта: {data?.email}</p>
+            <p>Директор: {data?.director?.lastname} {data?.director?.firstname} {data?.director?.patronymic}</p>
+            <p>Мекенжай: {data?.coordinates?.description}</p>
+          </Col>
+          <Col md={6} style={{
+            border: '1px solid #1772AD',
+            borderRadius: '1px'
+          }}>
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+
+              center={data?.coordinates}
+              zoom={17}
+
+              onUnmount={onUnmount}>
+              <Marker key={'1'}
+                icon={flag_icon}
+                position={data?.coordinates}
+                >
+
+              </Marker>
+            </GoogleMap>
+          ) : <></>}
+          </Col>
         </Row>
       </Container>
     </>
