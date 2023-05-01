@@ -12,7 +12,6 @@
     "bootstrap": "^5.2.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
-    "react-bootstrap-table-next": "^4.0.3",
     "react-cool-onclickoutside": "^1.7.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.41.5",
